@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 import commonlibs.utils.BCrypt;
 
-public class TBLOperator extends CAuditableDataModel implements Serializable {
+public class TBLUsers extends CAuditableDataModel implements Serializable {
 
 	private static final long serialVersionUID = -460145854236713435L;
 

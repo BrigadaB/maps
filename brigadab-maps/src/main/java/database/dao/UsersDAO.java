@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.CDatabaseConnection;
-import database.datamodel.TBLOperator;
+import database.datamodel.TBLUsers;
 
 import commonlibs.commonclasses.CLanguage;
 import commonlibs.extendedlogger.CExtendedLogger;
 import commonlibs.utils.BCrypt;
 
 
-public class OperatorDAO {
+public class UsersDAO {
 	
-	public static TBLOperator loadData (final CDatabaseConnection databaseConexion, final String strId, CExtendedLogger localLogger, CLanguage localLanguage) {
+	public static TBLUsers loadData (final CDatabaseConnection databaseConexion, final String strId, CExtendedLogger localLogger, CLanguage localLanguage) {
 		
-		TBLOperator result = null;
+		TBLUsers result = null;
 	try {
 			
 			if (databaseConexion != null && databaseConexion.getDBConnection() != null) {
@@ -27,7 +27,7 @@ public class OperatorDAO {
 				ResultSet resultSet = statement.executeQuery("Select * From tblusers Where Id='" + strId + "'");
 				if (resultSet.next()){
 					
-					result = new TBLOperator();
+					result = new TBLUsers();
 					
 					result.setId(resultSet.getString("ID"));
 					result.setFirstName(resultSet.getString("FirstName"));
@@ -146,17 +146,17 @@ public class OperatorDAO {
 	
 	}
 	
-	public static List<TBLOperator> searchData (final CDatabaseConnection databaseConexion, CExtendedLogger localLogger, CLanguage localLanguage) {
+	public static List<TBLUsers> searchData (final CDatabaseConnection databaseConexion, CExtendedLogger localLogger, CLanguage localLanguage) {
 		
-		List<TBLOperator> result = new ArrayList<TBLOperator>();
+		List<TBLUsers> result = new ArrayList<TBLUsers>();
 		
 		return result;
 	}
 	
 	
-	public static TBLOperator checkvalid (final CDatabaseConnection databaseConexion, final String strName, final String strPassword, CExtendedLogger localLogger, CLanguage localLanguage) {
+	public static TBLUsers checkvalid (final CDatabaseConnection databaseConexion, final String strName, final String strPassword, CExtendedLogger localLogger, CLanguage localLanguage) {
 		
-	    TBLOperator result = null;
+	    TBLUsers result = null;
 	try {
 			
 			if (databaseConexion != null && databaseConexion.getDBConnection() != null) {
@@ -196,7 +196,7 @@ public class OperatorDAO {
 					strPasswordHashed = strPasswordHashed.replace("$2a$10$", "$2y$10$");
 					
 					if (strPasswordHashed.equals(strDBPassword)) {
-					result = new TBLOperator();
+					result = new TBLUsers();
 					
 					
 					result.setId(resultSet.getString("ID"));

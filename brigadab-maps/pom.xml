@@ -100,7 +100,7 @@
 						</systemProperty>
 					</systemPropieties>
 					<webAppConfig>
-						<contextPath>/zk-test-01</contextPath>
+						<contextPath>/brigadab-maps</contextPath>
 					</webAppConfig>
 				</configuration>
 				<executions>
