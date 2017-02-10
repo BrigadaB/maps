@@ -1,4 +1,4 @@
-package org.maps.constant;
+package constant;
 
 import java.io.File;
 

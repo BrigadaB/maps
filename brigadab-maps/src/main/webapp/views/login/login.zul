@@ -1,7 +1,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <?link rel="stylesheet" type="text/css" href="resources/styles/login.style.css"?>
 <zk>
-	<window id="windowLogin" apply="org.maps.controller.login.CLoginController"	title="Login with your operator name and password" border="normal"	hflex="min">
+	<window id="windowLogin" apply="controller.login.CLoginController"	title="Login with your operator name and password" border="normal"	hflex="min">
 
 		<vbox hflex="min" align="center">
 

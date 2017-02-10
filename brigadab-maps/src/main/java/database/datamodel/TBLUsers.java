@@ -1,4 +1,4 @@
-package org.maps.database.datamodel;
+package database.datamodel;
 
 import java.io.Serializable;
 import java.time.LocalDate;

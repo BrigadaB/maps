@@ -1,15 +1,15 @@
-package org.maps.controller.login;
+package controller.login;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import constant.SystemConstants;
+import database.CDatabaseConnection;
+import database.CDatabaseConnectionConfig;
+import database.dao.UsersDAO;
+import database.datamodel.TBLUsers;
 import org.zkoss.zul.Label;
-import org.maps.constant.SystemConstants;
-import org.maps.database.CDatabaseConnection;
-import org.maps.database.CDatabaseConnectionConfig;
-import org.maps.database.dao.UsersDAO;
-import org.maps.database.datamodel.TBLUsers;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
@@ -96,9 +96,9 @@ public class CLoginController extends SelectorComposer<Component> {
 
 	    		//lugar donde esta el archivo de configuracion
 	    		String strRunningPath = Sessions.getCurrent().getWebApp().getRealPath(SystemConstants._WEB_INF_Dir) + File.separator;
-	    		
-	    		String test = strRunningPath + SystemConstants._CONFIG_Dir + File.separator + SystemConstants._Database_Connection_Config_File_Name;
 
+	    		String test =strRunningPath + SystemConstants._CONFIG_Dir + File.separator + SystemConstants._Database_Connection_Config_File_Name;
+	    		
 	    		if (databaseConnectionConfig.loadConfig(test, controllerLogger, controllerLanguage)) {
 
 	    			if (databaseConnection.makeConnectionToDB(databaseConnectionConfig, controllerLogger, controllerLanguage)) {
