@@ -1,4 +1,4 @@
-package database;
+package org.maps.database;
 
 
 /*import java.io.Serializable;*/

@@ -9,5 +9,9 @@
 		<value>brigadab-maps</value>
 	</preference>
 	-->
+   <listener>
+	<listener-class>org.maps.zksubsystem.CZKSubsystemEvents</listener-class>
+	</listener>
 	
+		
 </zk>
