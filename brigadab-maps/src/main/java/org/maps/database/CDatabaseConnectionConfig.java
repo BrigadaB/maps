@@ -1,4 +1,4 @@
-package database;
+package org.maps.database;
 
 import java.io.File;
 import java.io.FileInputStream;

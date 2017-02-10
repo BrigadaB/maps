@@ -1,4 +1,4 @@
-package database.datamodel;
+package org.maps.database.datamodel;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
