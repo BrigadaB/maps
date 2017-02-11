@@ -3,7 +3,7 @@
 <?init class="org.maps.security.CCheckAuthenticated" ?>
 <zk>
 
- <borderlayout id="homeLayout" apply=""  hflex="1" vflex="1">
+ <borderlayout id="homeLayout" apply="org.maps.controller.home.CHomeController"  hflex="1" vflex="1">
 
     <north id="northContent" height="100px" border="none" >
         

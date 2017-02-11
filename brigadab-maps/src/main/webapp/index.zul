@@ -7,7 +7,7 @@
 
     <north id="northContent" height="100px" border="none" >
         
-  <!--     <include id="includeNorthContent" src="/views/banner/banner.anonymous.zul"/> -->
+       <include id="includeNorthContent" src="/views/banner/banner.anonymous.zul"/> 
             
     </north>
     
@@ -27,7 +27,7 @@
     
     <south id="southContent" height="50px" border="none">
         
-<!--      <include id="includeSouthContent" src="/views/footer/footer.anonymous.zul"/> -->
+      <include id="includeSouthContent" src="/views/footer/footer.anonymous.zul"/>
             
     </south>
         
