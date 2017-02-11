@@ -1,0 +1,27 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<zk>
+ 
+ <div hflex="1" vflex="1"  sclass="banner">
+ 
+    <hbox hflex="1" vflex="1"  align="center">
+    
+        <a href="http://www.brigadab.com">
+    
+           <image src="/resources/images/logo.png" width="90px"/>   
+       
+        </a>
+    
+        <div width="400px">
+    
+            <label value="Brigada B." sclass="banner-head"/>
+    
+        </div>
+    
+    </hbox>  
+ 
+ </div>
+
+</zk>
+
+
+ 

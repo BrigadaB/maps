@@ -1,0 +1,12 @@
+.warn {
+	
+	color =red;
+	
+}
+
+/*Make Plain Grid */
+.gridLayousNoBorder tr.z-row td.z-row-inner, tr.z-row .z-cell, div.z-grid {
+	
+	border: none;
+	
+}

@@ -1,0 +1,16 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?init class="org.maps.security.CCheckAuthenticated"?>
+<zk>
+
+  <div hflex="1" vflex="1" sclass="footer">
+  
+    <vbox hflex="1" vflex="1" align="center">
+  
+      <label value="Brigada B"/>
+      <a href="http://www.brigadab.com">http://www.brigadab.com</a>
+    
+    </vbox>
+  
+  </div>
+  
+</zk>
