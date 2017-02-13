@@ -1,0 +1,13 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?init class="org.maps.security.CCheckAuthenticated" ?>
+<zk>
+
+  <tab id="tabAdmin" label="Admin" />
+        
+  <tabpanel id="tabAdminPanels" apply="">
+        
+    <button id="buttonPersonManager" label="Person Manager" />
+  
+  </tabpanel>
+
+</zk>

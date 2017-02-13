@@ -15,8 +15,8 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 	protected String strFirstName;
 	protected String strLastName;
 	protected String strPassword;
-	protected String strRole;
-	protected String strSingleSession;
+	protected Byte   byteRole;
+	protected Byte   byteSingleSession;
 	protected String strDescription;
 
 	protected LocalDate disabledAtDate;
@@ -37,9 +37,20 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 		
 	}
 	
+	public String getUserName() {
+		return strUserName;
+		
+	}
+
+	public void setUserName(String strUserName) {
+		this.strUserName = strUserName;
+		
+	}
+
 	public String getFirstName() {
 		
 		return strFirstName;
+		
 	}
 	
 	public void setFirstName(String strFirstName) {
@@ -51,6 +62,7 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 	public String getLastName() {
 		
 		return strLastName;
+	
 	}
 	
 	public void setLastName(String strLastName) {
@@ -59,25 +71,30 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 		
 	}
 	
-	public String getStrSingleSession() {
-		return strSingleSession;
+	public Byte getRole() {
+	
+		return byteRole;
+	
 	}
 
-	public void setStrSingleSession(String strSingleSession) {
-		this.strSingleSession = strSingleSession;
-	}
+	public void setRole(Byte byteRole) {
 	
-	public String getRole() {
-		
-		return strRole;
-	}
+		this.byteRole = byteRole;
 	
-	public void setRole(String strRole) {
-		
-		this.strRole = strRole;
-		
 	}
+
+	public Byte getSingleSession() {
 	
+		return byteSingleSession;
+	
+	}
+
+	public void setSingleSession(Byte byteSingleSession) {
+	
+		this.byteSingleSession = byteSingleSession;
+	
+	}
+
 	public String getPassword() {
 		
 		return strPassword;
@@ -85,6 +102,7 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 	}
 	
 	public void setPassword(String strPassword) {
+	
 		//verificamos si el strPassword ya viene encryptado
 		if  ( strPassword.startsWith("$2y$10$") == false) {
 		 String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar

@@ -1,0 +1,15 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?init class="org.maps.security.CCheckAuthenticated" ?>
+<zk>
+
+  <tab id="tabHome" label="Home" />
+        
+  <tabpanel id="tabHomePanels" apply="">
+    
+    <image src="/resources/images/logo.png"  sclass="centered"  /> 
+    
+    <label id="labelWecome" value="Welcome" sclass="welcome" />
+	    
+  </tabpanel>
+
+</zk>

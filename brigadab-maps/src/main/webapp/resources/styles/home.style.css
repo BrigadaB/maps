@@ -38,3 +38,29 @@
   color:#FFFFFF
  
 }
+
+.centered {
+	
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -120px;
+  margin-left: -50px;
+  width: 200px;
+  height: 180px;
+
+}
+
+.welcome {
+	
+	font-size:36px;
+	color:gray;
+	position: fixed;
+  	top: 50%;
+  	left: 50%;
+  	margin-top: 100px;
+    margin-left: -70px;
+  
+  	
+}
+

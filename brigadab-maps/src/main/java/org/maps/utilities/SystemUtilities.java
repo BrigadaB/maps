@@ -1,5 +1,7 @@
 package org.maps.utilities;
 
+import java.io.File;
+
 import org.maps.constant.SystemConstants;
 import org.zkoss.zk.ui.Session;
 
@@ -24,7 +26,7 @@ public class SystemUtilities {
 			CExtendedLogger webAppLogger = CExtendedLogger.getLogger(SystemConstants._Webapp_Logger_Name);
 			
 			//leemos la configuracion del archivo
-			if (result.loadConfig(strConfigPath + SystemConstants._Logger_Config_File_Name, webAppLogger, null)==false) {
+			if (result.loadConfig(strConfigPath + File.separator + SystemConstants._Logger_Config_File_Name, webAppLogger, null)==false) {
 				
 				result = null; //en caso de falla no devolvemos nada
 			}

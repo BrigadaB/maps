@@ -79,6 +79,11 @@
 		<groupId>org.apache.httpcomponents</groupId>
 		<artifactId>httpclient</artifactId>
 		<version>4.3.4</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.zkoss.zkforge</groupId>
+		<artifactId>gmapsz</artifactId>
+		<version>3.0.4</version>
 	</dependency>		
 	</dependencies>
 	<build>

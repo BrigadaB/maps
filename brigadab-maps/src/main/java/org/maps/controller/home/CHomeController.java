@@ -19,13 +19,16 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
 
 import commonlibs.commonclasses.CLanguage;
 import commonlibs.commonclasses.ConstantsCommonClasses;
 import commonlibs.extendedlogger.CExtendedConfigLogger;
 import commonlibs.extendedlogger.CExtendedLogger;
 import commonlibs.utils.Utilities;
+import commonlibs.utils.ZKUtilities;
 
 
 public class CHomeController extends SelectorComposer<Component> {
@@ -124,20 +127,112 @@ public class CHomeController extends SelectorComposer<Component> {
     
     public void initView() {
         
-        TBLUsers tblUsers = ( TBLUsers ) Sessions.getCurrent().getAttribute( SystemConstants._Operator_Credential_Session_Key );
+        try {
+    	
+			TBLUsers tblUsers = (TBLUsers) Sessions.getCurrent().getAttribute(SystemConstants._Operator_Credential_Session_Key);
+
+			if (tblUsers != null) {
+
+				if (labelHeader != null) {
+
+					labelHeader.setValue((tblUsers.getRole() == 0 ? "Admin" : "User"));
+
+				}
+			}
+			// aqui iniciamos los tab de manera dinamica
+
+			// creaos el componente a partir del Zul un arreglo con los dos
+			// componentes raiz
+			Component[] components;
+			Tab tab;
+
+			
+			// home se le muestra a todo el mundo
+			components = Executions.getCurrent().createComponents("/views/tabs/home/tabhome.zul", null);
+
+			// buscamos el componente de tipo tab esta rutina es un simple ciclo
+			// de busqueda
+			tab = (Tab) ZKUtilities.getComponent(components, "Tab");
+
+			if (tab != null) {
+
+				// asignamos tab encontrado de modo dinamico al tabbox
+				tabboxMainContent.getTabs().appendChild(tab);
+				
+				  // buscamos el componente de tipo tabpanel Tabpanel tabPanel
+				  Tabpanel tabPanel = (Tabpanel) ZKUtilities.getComponent( components, "Tabpanel");
+				  
+				  if ( tabPanel != null ) {
+				  
+				    // asignamos el tabpanel encontrado de modo dinamico al
+				    tabboxMainContent.getTabpanels().appendChild( tabPanel);
+				    
+				  }
+				
+			}
+
+			if ( tblUsers.getRole() == 2 ) {
+	            
+	            // creaos el componente a partir del Zul un arreglo con los dos componentes raiz
+	            components =  Executions.getCurrent().createComponents( "/views/tabs/admin/tabadmin.zul", null );
+	            
+	            // buscamos el componente de tipo tab esta rutina es un simple siclo de busqueda 
+	            tab = (Tab) ZKUtilities.getComponent( components, "Tab" );
+	            
+	            if ( tab != null ) {
+	                
+	                // asignamos tab encontrado de modo dinamico al tabbox
+	                tabboxMainContent.getTabs().appendChild( tab );
+	                
+	                // buscamos el componente de tipo tabpanel 
+	                Tabpanel tabPanel = (Tabpanel) ZKUtilities.getComponent( components, "Tabpanel" );
+	                
+	                if ( tabPanel != null ) {
+	                    
+	                    // asignamos el tabpanel encontrado de modo dinamico al tabbox
+	                    tabboxMainContent.getTabpanels().appendChild( tabPanel );
+	            
+	                }
+	            
+	            }
+
+	        }
+	            
+			// creaos el componente a partir del Zul un arreglo con los dos
+			// componentes raiz
+			components = Executions.getCurrent().createComponents("/views/tabs/googlemap/tabgooglemap.zul", null);
+
+			// buscamos el componente de tipo tab esta rutina es un simple ciclo
+			// de busqueda
+			tab = (Tab) ZKUtilities.getComponent(components, "Tab");
+
+			if (tab != null) {
+
+				// asignamos tab encontrado de modo dinamico al tabbox
+				tabboxMainContent.getTabs().appendChild(tab);
+
+				// buscamos el componente de tipo tabpanel
+				Tabpanel tabPanel = (Tabpanel) ZKUtilities.getComponent(components, "Tabpanel");
+
+				if (tabPanel != null) {
+
+					// asignamos el tabpanel encontrado de modo dinamico al
+					// tabbox
+					tabboxMainContent.getTabpanels().appendChild(tabPanel);
+
+				}
+
+			}
         
-        if ( tblUsers != null ) {
-            
-            if ( labelHeader != null ) {
-             
-                labelHeader.setValue( ( tblUsers.getRole() == "0" ? "Admin" : "User" ) );
-                
-            }
-        }
-  
+    	}
+    	catch ( Exception ex ) {
+        
+    		if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );
+     
+    	}
+        
     }
     
-
     @Override
     public void doAfterCompose( Component comp ) {
         

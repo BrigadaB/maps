@@ -30,10 +30,12 @@ public class UsersDAO {
 					result = new TBLUsers();
 					
 					result.setId(resultSet.getString("ID"));
+					result.setPassword(resultSet.getString("Password"));
+					result.setUserName(resultSet.getString("UserName"));
 					result.setFirstName(resultSet.getString("FirstName"));
 					result.setLastName(resultSet.getString("LastName"));
-					result.setRole(resultSet.getString("NameRole"));
-					result.setPassword(resultSet.getString("Password"));
+					result.setRole(resultSet.getByte("Role"));
+					result.setSingleSession(resultSet.getByte("SingleSession"));
 					result.setDescription(resultSet.getString("Description"));
 					
 					// interface
@@ -200,10 +202,12 @@ public class UsersDAO {
 					
 					
 					result.setId(resultSet.getString("ID"));
+					result.setUserName(resultSet.getString("UserName"));
+					result.setUserName(resultSet.getString("UserName"));
 					result.setFirstName(resultSet.getString("FirstName"));
 					result.setFirstName(resultSet.getString("LastName"));
-					result.setRole(resultSet.getString("Role"));
-					result.setPassword(resultSet.getString("Password"));
+					result.setRole(resultSet.getByte("Role"));
+					result.setSingleSession(resultSet.getByte("SingleSession"));
 					result.setDescription(resultSet.getString("Description"));
 					
 					// interface
