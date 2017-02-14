@@ -2,13 +2,15 @@ package org.maps.controller.tab.map;
 
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
-
 
 import org.maps.constant.SystemConstants;
+import org.maps.database.CDatabaseConnection;
+import org.maps.database.dao.PositionsHystoryDAO;
 import org.maps.database.datamodel.TBLUsers;
 import org.maps.utilities.SystemUtilities;
 import org.zkoss.gmaps.Gmaps;
@@ -19,14 +21,15 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import java.time.format.DateTimeFormatter;
 
 import commonlibs.commonclasses.CLanguage;
 import commonlibs.commonclasses.ConstantsCommonClasses;
@@ -37,20 +40,22 @@ import commonlibs.utils.Utilities;
 
 @SuppressWarnings( "serial" )
 public class CTapMapController extends SelectorComposer<Component> {
-        
+
+    protected CDatabaseConnection databaseConnection = null; 
+    
     protected CExtendedLogger controllerLogger = null;
     
     protected CLanguage controllerLanguage = null;
     
-    protected List<Gmarker> listMarker = new ArrayList<Gmarker>();
+    protected List<Gmarker> historyListMarker = new ArrayList<Gmarker>(), newListMarker = new ArrayList<Gmarker>();
 
-    protected Gmarker marker;
+    protected Gmarker marker, lastMarker;
     
     @Wire
     private Gmaps gmaps;
      
     @Wire
-    private Button buttonCreateMarker, buttonDeleteMarker, buttonMarkerInfo, buttonChangeInfo;
+    private Button buttonCreateMarker, buttonDeleteMarker, buttonLoadLastMarker, buttonChangeInfo, buttonLoadHistoryMarker;
      
     @Wire
     private Doublebox doubleboxLatitude, doubleboxLongitude;
@@ -139,26 +144,45 @@ public class CTapMapController extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose( Component comp ) {
         
+    	
+    	
         try {
             
             super.doAfterCompose( comp );
          
          // obtenemos la direccion del archivo de configuracion de los logger
-            final String strRunningPath = Sessions.getCurrent().getWebApp().getRealPath( SystemConstants._WEB_INF_Dir ) + File.separator + SystemConstants._CONFIG_Dir + File.separator;
+            final String strRunningPath = Sessions.getCurrent().getWebApp().getRealPath( SystemConstants._WEB_INF_Dir ) + File.separator;
             
             //Inicializacmos el Logger y el Lenguaje
             initcontrollerLoggerAndcontrollerLanguage( strRunningPath, Sessions.getCurrent() );
             
-            gmaps.setLat( 10.974586 );
-            gmaps.setLng( -63.870997 );
+            Session currentSession = Sessions.getCurrent();
+            
+            if ( currentSession.getAttribute( SystemConstants._DB_Connection_Session_Key ) instanceof CDatabaseConnection ) {
+                
+                //recuperamos la sesion
+                databaseConnection = ( CDatabaseConnection ) currentSession.getAttribute( SystemConstants._DB_Connection_Session_Key );
+                //Buscamos el Usuario
+                TBLUsers tblUser = ( TBLUsers ) Sessions.getCurrent().getAttribute(SystemConstants._Operator_Credential_Session_Key);
 
+                
+    			if (tblUser != null) {
+    				// Gaurdamos en una Lista los marcadores de la Base de Datos 
+    	            historyListMarker = PositionsHystoryDAO.loadMarkers( databaseConnection, tblUser.getId(), controllerLogger, controllerLanguage );
+    	            // asignamos el ultumo marcador
+    				lastMarker = historyListMarker.get(0);
+    			}
+
+            }
+            
+            // ubucamos el mapara segun el ultimo marcado
+            gmaps.setLat(lastMarker.getLat());
+			gmaps.setLng(lastMarker.getLng());
+
+			// llenamos los campos
             doubleboxLatitude.setValue(gmaps.getLat());
             doubleboxLongitude.setValue(gmaps.getLng());
             intboxZoom.setValue(gmaps.getZoom());
-            
-            gmaps = new Gmaps();
-            Events.echoEvent( new Event( "onClick", buttonCreateMarker, marker) ); 
-         
                        
         }
         catch ( Exception ex ) {
@@ -173,144 +197,378 @@ public class CTapMapController extends SelectorComposer<Component> {
     @Listen("onMapClick = #gmaps")
     public void onMapClick( MapMouseEvent event ) {
 
-        doubleboxLatitude.setValue(event.getLatLng().getLatitude());
-        doubleboxLongitude.setValue(event.getLatLng().getLongitude());
-        
-        Gmarker markerfocus = marker; 
-        marker = event.getGmarker();
-        
-        
-        if ( marker != null ) {
-        	
-        	markerfocus.setIconHeight( 3 );
-            markerfocus.setIconWidth( 1 );
-            
-            marker.setIconHeight( 8 );
-            marker.setIconWidth( 6 );
-        
-            buttonDeleteMarker.setDisabled( false );
-            buttonCreateMarker.setDisabled( true );
-            
-            marker.setOpen( !marker.isOpen() && !marker.getContent().isEmpty() );
-            
-            if ( marker.isOpen() || marker.getContent().isEmpty() ) {            
-            	
-            	textboxChangeInfo.setDisabled( false );
-            	buttonChangeInfo.setDisabled( false );
-            	textboxChangeInfo.setValue( marker.getContent() ); 
-            
-            }
-            
-        }
-        else {
-            
-            buttonCreateMarker.setDisabled( false );
-            textboxChangeInfo.setDisabled( true);
-            buttonChangeInfo.setDisabled( true );
-            buttonDeleteMarker.setDisabled( true );
-            textboxChangeInfo.setValue( null ); 
-            
-        }
+		try {
+
+			// lenamos los campos segun donde se alla dado click en el mapa
+			doubleboxLatitude.setValue(event.getLatLng().getLatitude());
+			doubleboxLongitude.setValue(event.getLatLng().getLongitude());
+
+			// se guarda el marcador anterior si existe
+			Gmarker markerfocus = marker;
+			// se guarda el nuevo marcador si existe
+			marker = event.getGmarker();
+
+			if (marker != null) {
+
+				
+				if (markerfocus != null) {
+
+					markerfocus.setIconHeight(3);
+					markerfocus.setIconWidth(1);
+				}
+
+				marker.setIconHeight(30);
+				marker.setIconWidth(40);
+
+				buttonDeleteMarker.setDisabled(false);
+				buttonCreateMarker.setDisabled(true);
+
+				// si no esta abierto y no esta vacio se abre el info
+				marker.setOpen(!marker.isOpen() && !marker.getContent().isEmpty());
+
+				if (marker.isOpen() || marker.getContent().isEmpty()) {
+
+					textboxChangeInfo.setDisabled(false);
+					buttonChangeInfo.setDisabled(false);
+					textboxChangeInfo.setValue(marker.getContent());
+
+				}
+
+			} else {
+
+				buttonCreateMarker.setDisabled(false);
+				textboxChangeInfo.setDisabled(true);
+				buttonChangeInfo.setDisabled(true);
+				buttonDeleteMarker.setDisabled(true);
+				textboxChangeInfo.setValue(null);
+
+			}
+		} 
+		catch (Exception ex) {
+
+			if (controllerLogger != null)
+				controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+		}
         
     }
     
     @Listen("onChange = #latitude, #longitude" )
     public void onPositionChange() {
-       
-        gmaps.panTo(doubleboxLatitude.getValue(), doubleboxLongitude.getValue());
+    
+    	try {
+    	
+    		gmaps.panTo(doubleboxLatitude.getValue(), doubleboxLongitude.getValue());
+        
+    	}
+    	catch ( Exception ex ) {
+        
+    		if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );
+     
+    	}
     
     }
      
     @Listen("onChange = #zoom" )
     public void onZoomChange() {
-    
-        gmaps.setZoom(intboxZoom.getValue());
-           
+    	
+    	try {
+        
+    		gmaps.setZoom(intboxZoom.getValue());
+    	
+    	}
+        catch ( Exception ex ) {
+            
+            if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );
+         
+        }   
+    	
     }
  
     
     @Listen("onClick = #buttonChangeInfo") 
     public void onClickButtonChangeInfo() {
         
-    	marker.setContent( textboxChangeInfo.getValue() ); 
-    	marker.setOpen( !marker.getContent().isEmpty() );
-        
+    	try {
+    		
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button change info clicked"));
+			// se asigna lel texto del texbo al info del marcador seleccionado y si es vacio lo cierra
+    		marker.setContent( textboxChangeInfo.getValue() ); 
+    		marker.setOpen( !marker.getContent().isEmpty() );
+    	}
+        catch ( Exception ex ) {
+            
+            if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );
+         
+        }
+    
     }   
     
     @Listen("onClick = #buttonCreateMarker") 
     public void onClickButtonCreateMarker( Event event) {
-        
-        LatLng pointCoord = new LatLng(doubleboxLatitude.getValue(), doubleboxLongitude.getValue()); 
-        
-        final String strId = UUID.randomUUID().toString(); 
-     
-        Gmarker markerfocus = marker; 
-        marker = new  Gmarker( "", pointCoord );
-        
-        if ( doubleboxLatitude.getValue().toString().substring(0, 6).contains("10.974") && doubleboxLongitude.getValue().toString().substring(0, 7).contains("-63.870") ) 
-            marker.setContent("Elysium st operations center.");       	
-        
-        marker.setId( strId );
-        marker.setOpen( !marker.getContent().isEmpty() );
-        marker.setParent( gmaps );
-        
-        buttonCreateMarker.setDisabled( true );
 
-        listMarker.add( marker );
-        
-        marker.setIconHeight( 5 );
-        marker.setIconWidth( 3 );
-        
-        if (markerfocus != null ) {
-        	
-        	markerfocus.setIconHeight( 3 );
-            markerfocus.setIconWidth( 1 );
-        }
-        
+		try {
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button create marker clicked"));
+
+			// se tomam los valores de coordenadas y de elaboracion
+			LatLng pointCoord = new LatLng(doubleboxLatitude.getValue(), doubleboxLongitude.getValue());
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("H:mm:ss");
+			final String strId =  LocalDate.now().toString() + ", " + LocalTime.now().format(dtf).toString();
+
+			Gmarker markerfocus = marker;
+			
+			// se crea e nuevo marcador se inicializa con los valores correspondiente y se asigna al mapa
+			marker = new Gmarker(strId, pointCoord);
+			marker.setId(strId);
+			marker.setOpen(!marker.getContent().isEmpty());
+			marker.setParent(gmaps);
+
+			buttonCreateMarker.setDisabled(true);
+
+			// se guarda en la lista de nuevos marcades
+			newListMarker.add(marker);
+
+			marker.setIconHeight(5);
+			marker.setIconWidth(3);
+
+			if (markerfocus != null) {
+
+				markerfocus.setIconHeight(3);
+				markerfocus.setIconWidth(1);
+			}
+			
+		} catch (Exception ex) {
+
+			if (controllerLogger != null)
+				controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+		}
+    
     }
     
     @Listen("onClick = #buttonDeleteMarker") 
     public void onClickButtonDeleteMarker( Event event ) {
+     
+		try {
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button delete marker clicked"));
+			
+			// elimina solo del mapa el marcador seleccionado
+			marker.setParent(null);
+			buttonDeleteMarker.setDisabled(true);
+
+		} catch (Exception ex) {
+
+			if (controllerLogger != null)
+				controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+		}
         
-      marker.setParent( null );
+    }
+    
+    @Listen("onClick = #buttonLoadLastMarker") 
+    public void onClickButtonLoadLastMarker() {
+    	
+    	try {
+			
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button load last marker clicked"));
+			
+			if ( lastMarker != null){
+
+				gmaps.closeInfo();
+				// muestra el ultimo marcador de la BD, si ya esta abre el info
+				if ( !gmaps.getChildren().contains( lastMarker ) ) {
+				
+					gmaps.setLat(lastMarker.getLat());
+					gmaps.setLng(lastMarker.getLng());
+					lastMarker.setParent(gmaps);
+					lastMarker.setOpen(true);
+
+				}
+				else lastMarker.setOpen(true);
+			}
+		} 
+		catch (Exception ex) {
+
+			if (controllerLogger != null)
+				controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+		}
+		 
+    }
+    
+    @Listen("onClick = #buttonLoadHistoryMarker") 
+    public void onClickButtonLoadHistoryMarker() {
+
+    	
+    	try {	
+    		
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button load history marker clicked"));
+    		//asigna al mapa los marcadores de la BD
+    		if (historyListMarker != null )   
+    			for ( Gmarker marker : historyListMarker ) { 
+    	 
+    				gmaps.setLat( marker.getLat() );
+    				gmaps.setLng( marker.getLng() );
+    				marker.setOpen( false );
+    				marker.setParent( gmaps );
          
-      buttonDeleteMarker.setDisabled( true );
+    			}
+    		// asina al mapa los marcadores nuevos
+    		if (newListMarker != null )   
+    			for ( Gmarker marker : newListMarker ) { 
+    	 
+    				gmaps.setLat( marker.getLat() );
+    				gmaps.setLng( marker.getLng() );
+    				marker.setOpen( false );
+    				marker.setParent( gmaps );
+         
+    			}
+    	}
+    	catch (Exception ex) {
+
+    		if (controllerLogger != null)
+    			controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+    	}
         
     }
     
-    @Listen("onClick = #buttonLoadPointer") 
-    public void onClickButtonLoadPointer() {
+    @Listen("onClick = #buttonClearMap") 
+    public void onClickButtonClearMap() {
         
-        
-      for ( Gmarker marker : listMarker ) { 
-        
-    	  	marker.setOpen( false );
-            marker.setParent( gmaps );
-       
-       }         
-        
+    	try {
+    		
+
+			if (controllerLogger != null)
+				controllerLogger.logMessage("1",
+						CLanguage.translateIf(controllerLanguage, "Button clear map clicked"));
+			
+    		// limpia por completo al mapa de marcadores
+    		gmaps.getChildren().clear();
+    		
+    	}
+   		catch (Exception ex) {
+
+   			if (controllerLogger != null)
+    			controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+    	}
     }
     
-    @Listen("onClick = #buttonClearMAp") 
-    public void onClickButtonClearMAp() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Listen("onClick = #buttonSaveMap") 
+    public void onClickButtonSaveMap() {
         
-        gmaps.getChildren().clear();
-        
+		if (controllerLogger != null)
+			controllerLogger.logMessage("1",
+					CLanguage.translateIf(controllerLanguage, "Button save map clicked"));
+	
+		Messagebox.show( "You are sure do you want save map?", "Save Map", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener() {
+             public void onEvent(Event evt) throws InterruptedException {
+                   
+                 if ( evt.getName().equals( "onOK" ) ) {
+                       
+                	 try {
+                 		
+                 		List<Gmarker> deleteMarker = new ArrayList<Gmarker>(), insertMarker = new ArrayList<Gmarker>();
+                 		
+             			TBLUsers tblUser = ( TBLUsers ) Sessions.getCurrent().getAttribute(SystemConstants._Operator_Credential_Session_Key);
+
+              			if (tblUser != null) {
+              				
+              					
+              				if (newListMarker != null )   
+              	    			for ( Gmarker marker : newListMarker )  
+              	    				if ( gmaps.getChildren().contains( marker ) ) 
+              	    					insertMarker.add(marker); 
+              	    			
+              				if (historyListMarker != null )   
+              	    			for ( Gmarker marker : historyListMarker )
+              	    	 			if ( !gmaps.getChildren().contains( marker ) ) 
+              	    	 				deleteMarker.add(marker);
+              	 
+              				newListMarker.clear();
+              				historyListMarker.clear();
+              				int i = 0;
+              				while (gmaps.getChildren().iterator().hasNext()) {
+              					
+              					historyListMarker.add( (Gmarker) gmaps.getChildren().get(i) );
+              					i = i + 1;
+              				}
+              				
+              	             //PositionsHystoryDAO.insertMarker(databaseConnection, tblUser.getId(), newListMarker, controllerLogger, controllerLanguage );
+              	            
+              			}
+             			
+                 	}
+                	catch (Exception ex) {
+
+                			if (controllerLogger != null)
+                 			controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+                 	}
+                	 
+                	 
+                 }
+                 else {
+                     
+                     if ( controllerLogger != null ) 
+                         controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Not Save, confirm cancel" ) );
+                   
+                 }
+                   
+              }
+        });
+    	
     }
      
     @Listen("onMapMove = #gmaps") 
     public void onMapMove() {
-        
-        doubleboxLatitude.setValue(gmaps.getLat());
-        doubleboxLongitude.setValue(gmaps.getLng());
+    
+    	try {
+    	
+    		doubleboxLatitude.setValue(gmaps.getLat());
+    		doubleboxLongitude.setValue(gmaps.getLng());
+    	}
+    	catch (Exception ex) {
+			
+    			if (controllerLogger != null)
+    				controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+    	}
     
     }   
  
     @Listen("onMapZoom = #gmaps") 
     public void onMapZoom() {
     
-        intboxZoom.setValue(gmaps.getZoom());
+    	try { 
+    		
+    		intboxZoom.setValue(gmaps.getZoom());
     
+    	}
+   		catch (Exception ex) {
+
+   			if (controllerLogger != null)
+    			controllerLogger.logException("-1021", ex.getMessage(), ex);
+
+    	}
+    	
     }   
 
 }
