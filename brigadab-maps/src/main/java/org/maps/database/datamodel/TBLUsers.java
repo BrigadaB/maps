@@ -24,6 +24,30 @@ public class TBLUsers extends CAuditableDataModel implements Serializable {
 
 	protected LocalDate LastLoggedDate;
 	protected LocalTime LastLoggedTime;
+	
+	
+	public TBLUsers ( String strId, String strUserName, String strFirstName, String strLastName, String strPassword, byte byteRole, byte byteSingleSession, String strDescription, String strDisiabledBy, LocalDate disiabledAtDate, LocalTime disiabledAtTime, LocalDate lastLoginAtDate, LocalTime lastLoginAtTime) {
+		
+	       
+        this.strId= strId;
+        this.strUserName = strUserName;
+        this.strFirstName = strFirstName;
+        this.strLastName = strLastName;
+        this.strPassword = strPassword;
+        this.byteRole = byteRole;
+        this.byteSingleSession = byteSingleSession;
+        this.strDescription = strDescription;  
+        
+        this.disabledAtDate = disiabledAtDate;
+        this.disabledAtTime = disiabledAtTime;   
+        this.LastLoggedDate = lastLoginAtDate;
+        this.LastLoggedTime = lastLoginAtTime;
+        
+    }
+     
+    public TBLUsers() {
+    
+    }
 
 	public String getId() {
 		

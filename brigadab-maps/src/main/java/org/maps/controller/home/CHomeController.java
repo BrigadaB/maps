@@ -145,7 +145,7 @@ public class CHomeController extends SelectorComposer<Component> {
 			// componentes raiz
 			Component[] components;
 			Tab tab;
-
+/*
 			
 			// home se le muestra a todo el mundo
 			components = Executions.getCurrent().createComponents("/views/tabs/home/tabhome.zul", null);
@@ -197,7 +197,7 @@ public class CHomeController extends SelectorComposer<Component> {
 	            }
 
 	        }
-	            
+*/	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
 			components = Executions.getCurrent().createComponents("/views/tabs/googlemap/tabgooglemap.zul", null);
@@ -216,8 +216,7 @@ public class CHomeController extends SelectorComposer<Component> {
 
 				if (tabPanel != null) {
 
-					// asignamos el tabpanel encontrado de modo dinamico al
-					// tabbox
+					// asignamos el tabpanel encontrado de modo dinamico al tabbox
 					tabboxMainContent.getTabpanels().appendChild(tabPanel);
 
 				}

@@ -3,7 +3,6 @@ package org.maps.database.dao;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.maps.database.CDatabaseConnection;
@@ -72,22 +71,21 @@ public class PositionsHystoryDAO {
     final public static boolean insertMarker ( final CDatabaseConnection dataBaseConnection,  String strUserId, List<Gmarker> listMarkers, CExtendedLogger localLogger, CLanguage localLanguage ) {
         
         boolean bresult = false;
-        Iterator<Gmarker> iterator = listMarkers.iterator();
-        
+      
         try {
         	
         	Statement statement = dataBaseConnection.getDBConnection().createStatement();
         	
-            while ( iterator.hasNext() ) {
+            for ( Gmarker marker : listMarkers ) {
         	
               final String SQLstr = "Insert Into tblpositionshistory(UserId,Latitude,Longitude,CreatedAtDate,CreatedAtTime)"
                     + " Values('" + strUserId + "','" 
-            		+ new Double( iterator.next().getLat() ).toString() + "','" 
-                    + new Double( iterator.next().getLat() ).toString()  + "','" 
-            		+ iterator.next().getContent().substring( 0, 10 ) + "','" 
-            		+ iterator.next().getContent().substring( 0, 10 ) + "')";
+            		+ new Double( marker.getLat() ).toString() + "','" 
+                    + new Double( marker.getLng() ).toString()  + "','" 
+            		+ marker.getContent().substring( 0, 10 ) + "','" 
+            		+ marker.getContent().substring( 12 ) + "')";
             		
-               statement.executeUpdate(SQLstr);
+               statement.executeUpdate( SQLstr );
             
             }
             
@@ -117,5 +115,54 @@ public class PositionsHystoryDAO {
         return bresult;
         
     }
+    
+    
+    public static boolean deletaMarker ( final CDatabaseConnection dataBaseConnection, final String strUserId, List<Gmarker> listMarkers, CExtendedLogger localLogger, CLanguage localLanguage ) {
+        
+        boolean bresult = false;
+                
+        try{
+            
+            Statement statement = dataBaseConnection.getDBConnection().createStatement();
+            
+            for ( Gmarker marker : listMarkers ) {
+            	
+            	final String SQLstr = "Delete from tblpositionshistory where UserId = '" + strUserId
+            	+ "' and Latitude='" + new Double( marker.getLat() ).toString() 
+            	+ "' and Longitude='"+ new Double( marker.getLng() ).toString()  
+            	+ "' and CreatedAtDate='"+ marker.getContent().substring( 0, 10 ) 
+            	+ "' and CreatedAtTime='"+ marker.getContent().substring( 12 ) + "'";
+            
+            	statement.executeUpdate( SQLstr );
+            
+            }
+            
+            dataBaseConnection.getDBConnection().commit();
+            
+            statement.close();
+            
+            bresult = true;
+        }
+        catch ( Exception ex ){
+            
+            if ( dataBaseConnection != null && dataBaseConnection.getDBConnection() != null) 
+                try {
+                  
+                    dataBaseConnection.getDBConnection().rollback(); // en caso de error vuelve atras
+                  
+                }
+                catch ( Exception ex1 ){
+                
+                    if ( localLogger != null ) localLogger.logException( "-1021" , ex.getMessage(), ex );
+                }
+              
+            if ( localLogger != null )  localLogger.logException( "-1022" , ex.getMessage(), ex );
+              
+        }
+        
+        return bresult;
+        
+    }
+    
 
 }
