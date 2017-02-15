@@ -24,6 +24,7 @@ import commonlibs.commonclasses.CLanguage;
 import commonlibs.commonclasses.ConstantsCommonClasses;
 import commonlibs.extendedlogger.CExtendedConfigLogger;
 import commonlibs.extendedlogger.CExtendedLogger;
+import commonlibs.utils.BCrypt;
 import commonlibs.utils.Utilities;
 
 import org.maps.controller.users.manager.CManagerController;
@@ -65,6 +66,8 @@ public class CEditorController extends SelectorComposer<Component> {
 	@Wire Textbox textboxFirstName;
 	@Wire Label labelLastName;
 	@Wire Textbox textboxLastName;
+	@Wire Label labelPassword;
+	@Wire Textbox textboxPassword;
 	@Wire Label labelRole;
 	@Wire Selectbox selectboxRole;
 	@Wire Label labelDescription;
@@ -250,6 +253,13 @@ public class CEditorController extends SelectorComposer<Component> {
 	     usersM.setLastName(textboxLastName.getValue());
          usersM.setRole((byte) selectboxRole.getSelectedIndex());
 	     usersM.setDescription(textboxDescription.getValue());
+
+	        String strPassword = textboxPassword.getValue();
+			String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar
+			strPassword= BCrypt.hashpw(strPassword, strPasswordKey); //aqui se realiza la encriptación
+			strPassword = strPassword.replace("$2a$10$", "$2y$10$"); //
+		
+		usersM.setPassword(strPassword);
 	     
 	     // ******************* el en video usan dos variables persontoadd y persontomodify, yo uso una sola, este codigo es menos entendible
 	     
@@ -265,6 +275,13 @@ public class CEditorController extends SelectorComposer<Component> {
     	     usersA.setLastName(textboxLastName.getValue());
              usersA.setRole((byte) selectboxRole.getSelectedIndex());
     	     usersA.setDescription(textboxDescription.getValue());
+
+ 	        String strPassword = textboxPassword.getValue();
+ 			String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar
+ 			strPassword= BCrypt.hashpw(strPassword, strPasswordKey); //aqui se realiza la encriptación
+ 			strPassword = strPassword.replace("$2a$10$", "$2y$10$"); //
+ 		
+ 		usersA.setPassword(strPassword);
     	     UsersDAO.insertData(DatabaseConnection, usersA, controllerLogger, controllerLanguage);                    //actualizamos en la db 
             Events.echoEvent( new Event( "onCambiar", callerComponent, usersA ) );
         }

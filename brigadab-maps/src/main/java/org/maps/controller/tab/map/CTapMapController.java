@@ -39,10 +39,12 @@ import commonlibs.extendedlogger.CExtendedLogger;
 import commonlibs.utils.Utilities;
 
 
-@SuppressWarnings( "serial" )
+
 public class CTapMapController extends SelectorComposer<Component> {
 
-    protected CDatabaseConnection databaseConnection = null; 
+	private static final long serialVersionUID = -4054777931730185834L;
+
+	protected CDatabaseConnection databaseConnection = null; 
     
     protected CExtendedLogger controllerLogger = null;
     

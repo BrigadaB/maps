@@ -1,0 +1,72 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?init class="org.maps.security.CCheckAuthenticated" ?>
+<zk> 
+   <tab id="tabGoogleMap" label="Google Map" />
+   
+  	<tabpanel id="tabpanelMap" apply="org.maps.controller.tab.map.CTapMapController">
+		
+		<script type="text/javascript" content="zk.googleAPIkey='AIzaSyCaocnBJE8ET2RWTX6q9Gts1R7_0u7XtP4'" />
+
+		<!-- define the property 'zk.googleAPIkey' (or any other name) 
+			as a ZK-library-property, VM-arg or system-property ${c:property('zk.googleAPIkey')}
+			or simply add your APIkey inline instead of ${c:property...} -->
+
+
+	        <gmaps version="3.26" id="gmaps" width="500px" height="300px"  showSmallCtrl="true" protocol="https">
+
+			<ginfo id="info" open="true" lat="10.974860" lng="-63.870734" content="centro de operaciones"/>
+
+			<gmarker id="gmarkerCOB2" lat="10.962469" lng="-63.862830" content="centro de operaciones Base 2" />
+			
+			<gmarker id="gmarkerCOB1" lat="10.941932" lng="-63.904626" content="centro de operaciones Base 1" />
+			
+		</gmaps>
+		
+   <toolbar >
+       	
+       		<grid  >
+        
+               <rows>
+  
+                  <row align="right">
+  
+  		  			  <button id="buttonSaveMap" label="Save Map" hflex="1" />
+  		  			    
+                      <label value="Latitude:" />
+                      <doublebox id="doubleboxLatitude" hflex="1" />
+  
+                      <label value="Longitude:" /> 
+                      <doublebox id="doubleboxLongitude" hflex="1" />
+  
+                      <label value="Zoom Level:" /> 
+                      <intbox id="intboxZoom" hflex="1" />
+
+                  </row >
+  
+                  <row>
+                    
+                      <button id="buttonLoadLastMarker" label="Load last Marker DB" hflex="1" />
+  							
+                      <button id="buttonLoadHistoryMarker" label="Load history" hflex="1" />
+
+                      <button id="buttonCreateMarker" label="Create Marker" hflex="1" disabled="true" />
+  
+                      <button id="buttonDeleteMarker" label="Delete Marker" hflex="1" disabled="true" />
+  
+					  <button id="buttonClearMap" label="Clear Map" hflex="1" disabled="true" />
+
+					  <button id="buttonChangeInfo" label="Change Info" hflex="1" />
+                      <textbox id="textboxChangeInfo" hflex="1" />
+  
+                  </row>
+  				 
+              </rows>
+  
+           </grid> 
+        
+     </toolbar>
+     </tabpanel>
+ </zk>
+   
+  
+ 

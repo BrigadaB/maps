@@ -166,11 +166,11 @@ public void onClickbuttonChangePassword (Event event) {
 
 			CDatabaseConnection databaseConnection = (CDatabaseConnection) Sessions.getCurrent().getAttribute(SystemConstants._DB_Connection_Session_Key);
 
-			TBLUsers tblOperator = (TBLUsers) Sessions.getCurrent().getAttribute( SystemConstants._Operator_Credential_Session_Key ); 
+			TBLUsers tblusers = (TBLUsers) Sessions.getCurrent().getAttribute( SystemConstants._Operator_Credential_Session_Key ); 
 			//labelOperator.setValue("Operator "+ tblOperator.getName());
 			
 			if (strNewPassword.equals(strConfirmPassword)) {
-				UsersDAO.changePassword(databaseConnection, tblOperator, strNewPassword, strOldPassword, controllerLogger, controllerLanguage);
+				UsersDAO.changePassword(databaseConnection, tblusers, strNewPassword, strOldPassword, controllerLogger, controllerLanguage);
 				windowPassword.detach();
 			}
 			else

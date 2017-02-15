@@ -2,7 +2,9 @@ package org.maps.controller.home;
 
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.maps.constant.SystemConstants;
 import org.maps.database.datamodel.TBLUsers;
@@ -22,6 +24,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Window;
 
 import commonlibs.commonclasses.CLanguage;
 import commonlibs.commonclasses.ConstantsCommonClasses;
@@ -170,7 +173,7 @@ public class CHomeController extends SelectorComposer<Component> {
 			if ( tblUsers.getRole() == 0 ) {
 	            
 	            // creaos el componente a partir del Zul un arreglo con los dos componentes raiz
-	            components =  Executions.getCurrent().createComponents( "/views/tabs/admin/tabadmin.zul", null );
+	            components =  Executions.getCurrent().createComponents( "/views/tabs/map/tabmap.zul", null );
 	            
 	            // buscamos el componente de tipo tab esta rutina es un simple siclo de busqueda 
 	            tab = (Tab) ZKUtilities.getComponent( components, "Tab" );
@@ -195,7 +198,7 @@ public class CHomeController extends SelectorComposer<Component> {
 	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
-			components = Executions.getCurrent().createComponents("/views/tabs/googlemap/tabgooglemap.zul", null);
+			components = Executions.getCurrent().createComponents("/views/tabs/admin/tabadmin.zul", null);
 
 			// buscamos el componente de tipo tab esta rutina es un simple ciclo
 			// de busqueda
@@ -250,18 +253,19 @@ public class CHomeController extends SelectorComposer<Component> {
         }
     }
 
-    @Listen( "onClick= #includeNorthContent #buttonChangePassword")
-    public void onClickbuttonChangePassword ( Event event ){
-    	
-    	
-    	
-    	
-        
-        if ( controllerLogger != null ) 
-            controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Button change password clicked" ) );
-            
-    }
-     
+	@Listen ("onClick= #includeNorthContent #buttonChangePassword")
+	public void onClickbuttonChangePassword (Event event) {
+		
+	        Map<String, Object> arg = new HashMap<String, Object>();
+	      
+	        
+	      Window win = (Window) Executions.createComponents("/views/login/changePassword.zul", null, arg);
+	      win.doModal();
+	
+		if (controllerLogger != null)
+			controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Button change password clicked" ) );
+		
+	}
     
     
     @SuppressWarnings( { "rawtypes", "unchecked" } )

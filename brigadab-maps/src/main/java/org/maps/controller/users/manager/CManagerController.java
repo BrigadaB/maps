@@ -138,11 +138,11 @@ public class CManagerController extends SelectorComposer<Component> {
         listitem.appendChild(cell);*/
 
         Listcell   cell = new Listcell();
-        cell.setLabel(users.getFirstName());
+        cell.setLabel(users.getUserName());
         listitem.appendChild(cell);
 
         cell = new Listcell();
-        cell.setLabel(users.getUserName());
+        cell.setLabel(users.getFirstName());
         listitem.appendChild(cell);
 
         cell = new Listcell();
@@ -150,7 +150,7 @@ public class CManagerController extends SelectorComposer<Component> {
         listitem.appendChild(cell);
 
         cell = new Listcell();
-        cell.setLabel(users.getRole() == 1 ? "Admin" : "User" );
+        cell.setLabel(users.getRole() == 0 ? "Admin" : "User" );
         listitem.appendChild(cell);
 
        

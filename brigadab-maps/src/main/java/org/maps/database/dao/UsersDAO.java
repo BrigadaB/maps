@@ -379,7 +379,7 @@ public static TBLUsers changePassword(final CDatabaseConnection databaseConexion
 				//aqui se va a necesitar encriptar
 				//final String strTest="Select * From tbloperator Where Name='" + strName + "' and Password='"+ strPassword +"' and DisabledBy Is Null and DisabledAtTime Is Null and DisabledAtDate Is Null";
 				//ahora no se puede usar el password para buscar en la db, como el name no se repite lo buscamos por alli
-				final String strTest="Select * From tbloperator Where Name='" + tblusers.getUserName() + "' and DisabledBy Is Null and DisabledAtTime Is Null and DisabledAtDate Is Null";
+				final String strTest="Select * From tblusers Where UserName='" + tblusers.getUserName() + "' and DisabledAtTime Is Null and DisabledAtDate Is Null";
 
 				ResultSet resultSet = statement.executeQuery(strTest);
 				if (resultSet.next()){
