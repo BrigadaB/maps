@@ -4,9 +4,10 @@
 
   <tab id="tabAdmin" label="Admin" />
         
-  <tabpanel id="tabAdminPanels" apply="">
+  <tabpanel id="tabAdminPanels" apply="org.maps.controller.tab.admin.CTabAdminController">
+  
         
-    <button id="buttonPersonManager" label="Person Manager" />
+    <button id="buttonUsersManager" label="Users Manager" />
   
   </tabpanel>
 

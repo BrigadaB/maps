@@ -145,17 +145,14 @@ public class CHomeController extends SelectorComposer<Component> {
 			// componentes raiz
 			Component[] components;
 			Tab tab;
-/*
+
 			
 			// home se le muestra a todo el mundo
 			components = Executions.getCurrent().createComponents("/views/tabs/home/tabhome.zul", null);
-
 			// buscamos el componente de tipo tab esta rutina es un simple ciclo
 			// de busqueda
 			tab = (Tab) ZKUtilities.getComponent(components, "Tab");
-
 			if (tab != null) {
-
 				// asignamos tab encontrado de modo dinamico al tabbox
 				tabboxMainContent.getTabs().appendChild(tab);
 				
@@ -170,8 +167,7 @@ public class CHomeController extends SelectorComposer<Component> {
 				  }
 				
 			}
-
-			if ( tblUsers.getRole() == 2 ) {
+			if ( tblUsers.getRole() == 0 ) {
 	            
 	            // creaos el componente a partir del Zul un arreglo con los dos componentes raiz
 	            components =  Executions.getCurrent().createComponents( "/views/tabs/admin/tabadmin.zul", null );
@@ -195,9 +191,8 @@ public class CHomeController extends SelectorComposer<Component> {
 	                }
 	            
 	            }
-
 	        }
-*/	            
+	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
 			components = Executions.getCurrent().createComponents("/views/tabs/googlemap/tabgooglemap.zul", null);
@@ -257,6 +252,10 @@ public class CHomeController extends SelectorComposer<Component> {
 
     @Listen( "onClick= #includeNorthContent #buttonChangePassword")
     public void onClickbuttonChangePassword ( Event event ){
+    	
+    	
+    	
+    	
         
         if ( controllerLogger != null ) 
             controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Button change password clicked" ) );

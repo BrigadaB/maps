@@ -31,7 +31,7 @@ public class CTabAdminController extends SelectorComposer<Component> {
     protected CExtendedLogger controllerLogger = null;
     
     protected CLanguage controllerLanguage = null;
-   
+    
     public void initcontrollerLoggerAndcontrollerLanguage  ( String strRunningPath, Session currentSession ) {
         
         //Leemos la configuración del logger del archivo o de la sesión
@@ -129,18 +129,18 @@ public class CTabAdminController extends SelectorComposer<Component> {
         }
     }
     
-    @Listen( "onClick= #buttonPersonManager" )
-    public void onClickbuttonPersonManager ( Event event ){
+    @Listen( "onClick= #buttonUsersManager" )
+    public void onClickbuttonUsersManager ( Event event ){
         
         if ( controllerLogger != null )            
-            controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Button person manager clicked" ) );
+            controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Button users manager clicked" ) );
             
         // paso de parametros a la ventana dialog
         
         Map<String,Object> params = new HashMap<String,Object>();
         params.put( "callerComponent", event.getTarget() ); 
         
-        Window win = ( Window ) Executions.createComponents("/views/person/manager/manager.zul", null, params);
+        Window win = ( Window ) Executions.createComponents("/views/users/manager/manager.zul", null, params);
         
         win.doModal();
         

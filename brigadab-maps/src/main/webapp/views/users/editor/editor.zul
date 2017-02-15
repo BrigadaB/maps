@@ -1,0 +1,59 @@
+<?page title="User" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+ <window id="windowsUsers" xmlns:w="client" title="Users" border="normal" hflex="min" apply="org.maps.controller.users.editor.CEditorController">
+   <vlayout width="290px">
+     <grid hflex="min">
+		<rows>
+	     <row>
+		   <label id="labelId" value="Id:" width="150px" visible="false"/>
+		   <textbox id="textboxId" value="" width="150px"  tabindex="1" visible="false">
+		   </textbox>
+	     </row>
+		 <row>
+		  <label id="labelUserName" value="User Name:" width="150px" />
+		  <textbox id="textboxUserName" value=""	width="180px" tabindex="2">
+		     	<attribute w:name="doKeyPress_">
+		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
+            </attribute>
+		   </textbox>
+		</row>
+		 <row>
+		  <label id="labelFirstName" value="First Name:" width="150px" />
+		  <textbox id="textboxFirstName" value=""	width="180px" tabindex="3">
+		     	<attribute w:name="doKeyPress_">
+		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
+            </attribute>
+		   </textbox>
+		</row>
+		<row>
+		  <label id="labelLastName" value="Last Name:" width="150px" />
+		  <textbox id="textboxLastName" value="" width="180px" tabindex="4" />
+		  <attribute w:name="doKeyPress_">
+		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
+            </attribute>
+		</row>
+		<row>
+		  <label id="labelPassword" value="Password:" width="150px" />
+		  <textbox id="textboxPassword" value="" type="password" width="180px" tabindex="4" />
+		  <attribute w:name="doKeyPress_">
+		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
+            </attribute>
+		</row>
+		 <row>
+		  <label id="labelRole" value="Role:" width="150px" />
+		    <selectbox id="selectboxRole" width="180px" tabindex="5"/>
+		</row>
+		<row>
+          <label id="labelDescription" value="Description:" width="150px" />
+		  <textbox id="textboxDescription" value="" width="200px" tabindex="6"/>
+        </row>
+       </rows>
+			</grid>
+			<div id="divbuttoncontainer">
+				<button id="buttonAccept" label="accept" style="float:rigth;margin-left:5px" />
+				<button id="buttonCancel" label="cancel" style="float:rigth;margin-left:5px" />
+			</div>
+		</vlayout>
+	</window>
+</zk>

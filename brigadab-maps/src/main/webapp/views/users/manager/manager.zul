@@ -1,0 +1,28 @@
+
+
+<zk>
+	<window id="windowsUsersManager" xmlns:w="client" title="Users manager" position="center,center" border="normal" apply="org.maps.controller.users.manager.CManagerController">
+		<vlayout width="800px">
+		<listbox id="listboxusers" width="100%" height="350px">
+          <listhead sizable="true">
+            <!-- <listheader label="Id" width="100px"/>  -->
+            <listheader label="Users Name" width="100px"/>
+            <listheader label="First Name" width="100px"/>
+            <listheader label="Last Name" width="100px"/>
+            <listheader label="Role" width="100px"/>
+            <listheader label="Description" width="150px"/>
+        </listhead>				
+		</listbox>
+		
+		<div id="divbuttoncontainer">
+			<!-- botones para las acciones -->
+			<button id="buttonRefresh" label="Refresh"  /> 
+			<button id="buttonAdd" label="Add" style="float:rigth;margin-left:5px" /> 
+			<button id="buttonModify" label="Modify" style="float:rigth;margin-left:5px" />
+			<button id="buttonDelete" label="Delete" style="float:rigth;margin-left:5px" />
+			<button id="buttonClose" label="Close" style="float:rigth;margin-left:5px" />
+		</div>
+		
+	</vlayout>
+	</window>
+</zk>

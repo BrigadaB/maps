@@ -69,4 +69,14 @@ public class SystemConstants {
     
     public static final String _Tab_Map_Controller_Logger_Name = "tab_map_controller";
     public static final String _Tab_Map_Controller_File_Log = "tab_map_controller.log";
+
+    public static final String _Change_Password_Controller_Logger_Name= "change_password_controller";
+    public static final String _Change_Password_Controller_File_Log = "change_password_controller.log";
+
+    public static final String _Users_Editor_Controller_Logger_Name = "users_editor_controller";
+    public static final String _Users_Editor_Controller_File_Log= "users_editor_controller.log";
+
+    public static final String _Users_Manager_Controller_Logger_Name = "users_manager_controller";
+    public static final String _Users_Manager_Controller_File_Log= "users_manager_editor_controller.log";
+
 }
