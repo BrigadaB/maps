@@ -21,7 +21,7 @@
 
 						<label value="Operator :" />
 
-						<textbox constraint="no empty" id="textboxOperator" width="200px" />
+						<textbox constraint="no empty" id="textboxOperator"  width="200px" />
 
 					</row>
 

@@ -13,10 +13,7 @@
 		 <row>
 		  <label id="labelUserName" value="User Name:" width="150px" />
 		  <textbox id="textboxUserName" value=""	width="180px" tabindex="2">
-		     	<attribute w:name="doKeyPress_">
-		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
-            </attribute>
-		   </textbox>
+          </textbox>
 		</row>
 		 <row>
 		  <label id="labelFirstName" value="First Name:" width="150px" />

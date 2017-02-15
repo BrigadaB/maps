@@ -199,6 +199,17 @@ public class CEditorController extends SelectorComposer<Component> {
 				textboxUserName.setValue( usersM.getUserName() );
 				textboxFirstName.setValue( usersM.getFirstName() );
 				textboxLastName.setValue( usersM.getLastName() );
+				
+				String strDBPassword = usersM.getPassword();
+				
+				String strDBPasswordKey = strDBPassword; 
+				strDBPasswordKey = strDBPasswordKey.substring(0,29);
+				strDBPasswordKey = strDBPasswordKey.replace("$2y$10$", "$2a$10$");
+				String strPasswordHashed = BCrypt.hashpw(strDBPasswordKey, strDBPasswordKey);
+				strPasswordHashed = strPasswordHashed.replace("$2a$10$", "$2y$10$");				
+				
+				textboxPassword.setValue(strPasswordHashed);
+				
 				if ( usersM.getRole() == 0 ) {
 					dataModelRole.addToSelection( "Admin" );
 				}
@@ -213,40 +224,14 @@ public class CEditorController extends SelectorComposer<Component> {
 			if ( controllerLogger != null )   
 				controllerLogger.logException( "-1021", ex.getMessage(), ex );        
 		}
+	
 	}
 
 	@Listen ( "onClick=#buttonAccept")
 	public void onClickbuttonaccept (Event event) {
-		/* Messagebox.show("Id: " + textboxid.getValue() + " Nombre: "+ textboxFirstName.getValue()+
-		 "Apellido: "+ textboxlastName.getValue() + " Fecha Nacimiento: " + dateboxbirthdate.getValue()
-		, "Aceptar", Messagebox.OK, Messagebox.INFORMATION);
-*/
-		//System.out.println("hola aceptar");
-
-/**		if (textboxId.getValue() == "") {
-			Messagebox.show("debe tener un ID", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-		} else 
-			if (textboxFirstName.getValue() == "") {
-				Messagebox.show("debe tener un Nombre", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-			} else 
-				if (textboxLastName.getValue() == "") {
-					Messagebox.show("debe tener un Apellido", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-				} else 
-                  if (dateboxBirthDate.getValue()==null){
-		             Messagebox.show("debe indicar una fecha válida", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-		        }
-		else
-		{
-	     
-**/		
-//		person = new TBLPerson(textboxId.getValue(),textboxFirstName.getValue(),textboxLastName.getValue(),selectboxGender.getSelectedIndex(),fechanac,textboxComment.getValue());
 		
-		//windowsPerson.detach();
-		//LocalDate fechanac = new java.sql.Date(dateboxBirthDate.getValue().getTime()).toLocalDate();
- 
 	if (usersM != null) {
 	
-//* 		 person = new TBLPerson();
 	     usersM.setId(textboxId.getValue());
 	     usersM.setUserName(textboxUserName.getValue());
 	     usersM.setFirstName(textboxFirstName.getValue());
@@ -261,8 +246,7 @@ public class CEditorController extends SelectorComposer<Component> {
 		
 		usersM.setPassword(strPassword);
 	     
-	     // ******************* el en video usan dos variables persontoadd y persontomodify, yo uso una sola, este codigo es menos entendible
-	     
+ 	     
      	UsersDAO.updateData(DatabaseConnection, usersM, controllerLogger, controllerLanguage); 
         Events.echoEvent( new Event( "onCambiar", callerComponent, usersM ) );    
 
@@ -287,8 +271,7 @@ public class CEditorController extends SelectorComposer<Component> {
         }
 
 		windowsUsers.detach();
-		}
-//Events.echoEvent("onClickbuttonModify",null, _subsInfo);
+}
 		
 
 	

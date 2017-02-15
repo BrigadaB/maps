@@ -1,30 +1,13 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?init class="org.maps.security.CCheckAuthenticated" ?>
 <zk> 
-   <tab id="tabGoogleMap" label="Google Map" />
-   
-  	<tabpanel id="tabpanelMap" apply="org.maps.controller.tab.map.CTapMapController">
-		
-		<script type="text/javascript" content="zk.googleAPIkey='AIzaSyCaocnBJE8ET2RWTX6q9Gts1R7_0u7XtP4'" />
-
-		<!-- define the property 'zk.googleAPIkey' (or any other name) 
-			as a ZK-library-property, VM-arg or system-property ${c:property('zk.googleAPIkey')}
-			or simply add your APIkey inline instead of ${c:property...} -->
-
-
-	        <gmaps version="3.26" id="gmaps" width="500px" height="300px"  showSmallCtrl="true" protocol="https">
-
-			<ginfo id="info" open="true" lat="10.974860" lng="-63.870734" content="centro de operaciones"/>
-
-			<gmarker id="gmarkerCOB2" lat="10.962469" lng="-63.862830" content="centro de operaciones Base 2" />
-			
-			<gmarker id="gmarkerCOB1" lat="10.941932" lng="-63.904626" content="centro de operaciones Base 1" />
-			
-		</gmaps>
-		
-   <toolbar >
+   <tab id="tabGoogleMap" label="Google Map"  />
+    
+   <tabpanel id="tabGoogleMapPanels"  apply="org.maps.controller.tab.map.CTabMapController" >
+    
+      <toolbar>
        	
-       		<grid  >
+       		<grid width="100%"  height="+">
         
                <rows>
   
@@ -64,8 +47,11 @@
   
            </grid> 
         
-     </toolbar>
-     </tabpanel>
+     <gmaps version="3.0.4" id="gmaps" width="100%" height="100%" protocol="https" /></toolbar>
+     
+       <script type="text/javascript" content="zk.googleAPIkey='AIzaSyCHfkSwNhyxqSzFLxImtjksCovuUZJJYoM'"/>
+           
+    </tabpanel>
  </zk>
    
   

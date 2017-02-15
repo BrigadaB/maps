@@ -170,10 +170,10 @@ public class CHomeController extends SelectorComposer<Component> {
 				  }
 				
 			}
-			if ( tblUsers.getRole() == 0 ) {
+			//if ( tblUsers.getRole() == 0 ) {
 	            
 	            // creaos el componente a partir del Zul un arreglo con los dos componentes raiz
-	            components =  Executions.getCurrent().createComponents( "/views/tabs/map/tabmap.zul", null );
+	            components =  Executions.getCurrent().createComponents( "/views/tabs/admin/tabadmin.zul", null );
 	            
 	            // buscamos el componente de tipo tab esta rutina es un simple siclo de busqueda 
 	            tab = (Tab) ZKUtilities.getComponent( components, "Tab" );
@@ -194,11 +194,11 @@ public class CHomeController extends SelectorComposer<Component> {
 	                }
 	            
 	            }
-	        }
+	       // }
 	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
-			components = Executions.getCurrent().createComponents("/views/tabs/admin/tabadmin.zul", null);
+			components = Executions.getCurrent().createComponents("/views/tabs/map/tabmap.zul", null);
 
 			// buscamos el componente de tipo tab esta rutina es un simple ciclo
 			// de busqueda
