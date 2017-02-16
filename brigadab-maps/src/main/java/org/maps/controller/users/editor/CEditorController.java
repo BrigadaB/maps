@@ -47,11 +47,7 @@ public class CEditorController extends SelectorComposer<Component> {
     
     protected TBLUsers usersM; //Usuario  a modificar
     protected TBLUsers usersA; //Usuario  a agregar
-    
-    
-   // protected Component componentModify;
-   // protected Component componentAdd;
-    
+           
     protected CDatabaseConnection DatabaseConnection=null;  
   
     protected CExtendedLogger controllerLogger = null;
@@ -191,10 +187,6 @@ public class CEditorController extends SelectorComposer<Component> {
 				}
 			}
 
-			//person = ( TBLPerson ) execution.getArg().get( "persontomodify" );
-			//componentModify = ( Component ) execution.getArg().get( "idModify" );
-			//componentAdd = ( Component ) execution.getArg().get( "onAgregar" );
-
 			if(usersM!=null){
 				textboxId.setValue( usersM.getId() );
 				textboxUserName.setValue( usersM.getUserName() );
@@ -281,7 +273,7 @@ public class CEditorController extends SelectorComposer<Component> {
 	     
  	     
      	UsersDAO.updateData(DatabaseConnection, usersM, controllerLogger, controllerLanguage);
-     	Events.echoEvent( new Event( "onCambiar", callerComponent, usersM ) );    
+     	Events.echoEvent( new Event( "onDialogFinish", callerComponent, usersM ) );    
 
         }
         else{
@@ -301,7 +293,7 @@ public class CEditorController extends SelectorComposer<Component> {
  		
  		    usersA.setPassword(strPassword);
     	    UsersDAO.insertData(DatabaseConnection, usersA, controllerLogger, controllerLanguage);                    //actualizamos en la db 
-            Events.echoEvent( new Event( "onCambiar", callerComponent, usersA ) );
+            Events.echoEvent( new Event( "onDialogFinish", callerComponent, usersA ) );
     }
 	     }	       
 				
@@ -312,8 +304,7 @@ public class CEditorController extends SelectorComposer<Component> {
 	
 @Listen ( "onClick=#buttonCancel")
 public void onClickbuttoncancel (Event event) {
-	 //Messagebox.show("Cancelar", "Cancel", Messagebox.OK, Messagebox.EXCLAMATION);
-		//System.out.println("hola cancelar");
+
 		windowsUsersEditor.detach();
 	}
 }

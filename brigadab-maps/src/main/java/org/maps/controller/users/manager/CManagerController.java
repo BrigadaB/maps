@@ -133,10 +133,7 @@ public class CManagerController extends SelectorComposer<Component> {
 		
 		public void render(Listitem listitem, TBLUsers users, int IntIndex) throws Exception {
     try{
-    	 /* Listcell cell = new Listcell();  no mostrar id
-        cell.setLabel(person.getId());
-        listitem.appendChild(cell);*/
-
+    	
         Listcell   cell = new Listcell();
         cell.setLabel(users.getUserName());
         listitem.appendChild(cell);
@@ -170,7 +167,6 @@ public class CManagerController extends SelectorComposer<Component> {
 	@Wire Listbox listboxusers;
 	@Wire Button buttonModify;
     @Wire Button buttonAdd;
-    // @Wire Button buttonConnectionToDB;
     @Wire Button buttonRefresh;
     @Wire Button buttonClose;
     @Wire Window windowsUsersManager; //la ventana del manager
@@ -190,29 +186,9 @@ public class CManagerController extends SelectorComposer<Component> {
 			//Inicializamos el Logger y el Language
 			initcontrollerLoggerAndcontrollerLanguage(strRunningPath, Sessions.getCurrent());			
 
-			
-			/*TBLPerson person01 = new TBLPerson("12225798","Edgar","Bastardo",1,LocalDate.parse("1974-10-09"),"Mi persona");
-			TBLPerson person02 = new TBLPerson("13670604","Loly","Gómez",0,LocalDate.parse("1980-01-16"),"Mi proxima jefa");
-			TBLPerson person03 = new TBLPerson("12674936","Al","Pérez",1,LocalDate.parse("1977-09-24"),"un pana");
-			TBLPerson person04 = new TBLPerson("4288565","Leonor","González",0,LocalDate.parse("1956-11-06"),"mi madre");
-			TBLPerson person05 = new TBLPerson("9476658","Tibisay","Cedeño",0,LocalDate.parse("1960-10-10"),"una pana"); 
-			TBLPerson person06 = new TBLPerson("16547282","Junibeth","Salazar",0,LocalDate.parse("1984-06-06"),"Esposa"); 
-			dataModel.add(person01);
-			dataModel.add(person02);
-			dataModel.add(person03);
-			dataModel.add(person04);
-			dataModel.add(person05);
-			dataModel.add(person06);
-			
-			dataModel.setMultiple(true);//activas selecion multiple
-			listboxperson.setModel(dataModel);
-			listboxperson.setItemRenderer(new RendererPerson() );*/
-			
 		 	Session currentSession = Sessions.getCurrent();
 		 	
 			//Obtenemos el logger del objeto webApp y guardamoes una referencia en a variable de clase controllerLogger 
-
-		 	//controllerLogger = (CExtendedLogger) Sessions.getCurrent().getWebApp().getAttribute(ConstantsCommonClasses._Webapp_Logger_App_Attribute_Key);
 
     		
 		 	if (currentSession.getAttribute(SystemConstants._DB_Connection_Session_Key) instanceof CDatabaseConnection) {
@@ -249,7 +225,6 @@ public class CManagerController extends SelectorComposer<Component> {
 			listboxusers.setModel(dataModel);
 			listboxusers.setItemRenderer(new RendererUser() );  //importante la renderización de los datos para que los muestre
 
-			//listboxperson.setModel(dataModel);
 		}
     	
     }
@@ -291,8 +266,8 @@ public class CManagerController extends SelectorComposer<Component> {
 	}
 	
     //evento que edita el model en la persona y permite volver a renderizar el model 
-    @Listen( "onCambiar=#listboxperson" )
-    public void onCambiar( Event evento) {
+    @Listen( "onDialogFinish=#listboxusers" )
+    public void onDialogFinishlistboxusers( Event event) {
     	
     	//forzamos refrescar la lista
     	

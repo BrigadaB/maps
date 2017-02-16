@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <logs>
-<logMark Type="Init" Date="16/02/2017" Time="00:25:34"/>
-<Log InstanceID="unknown@unknown.com 2017-02-16-00-25-34" LogType="Error" Level="INFO" Date="16/02/2017" Time="00:25:34" LoggerName="tab_home_controller unknown@unknown.com 2017-02-16-00-25-34" Sequence="1" ThreadID="18" ThreadName="qtp698437724-18" PackageName="commonlibs.commonclasses" ClassName="CLanguage" MethodName="setLanguageFileName" Line="134" Code="-1002" Message="The language file in the path [C:\Users\Edgar\git\maps\brigadab-maps\src\main\webapp\WEB-INF\config\langs\tab_home_controller.init.lang.xml] not exists"/>
+<logMark Type="Init" Date="16/02/2017" Time="01:42:18"/>
+<Log InstanceID="unknown@unknown.com 2017-02-16-01-42-18" LogType="Error" Level="INFO" Date="16/02/2017" Time="01:42:18" LoggerName="tab_home_controller unknown@unknown.com 2017-02-16-01-42-18" Sequence="1" ThreadID="16" ThreadName="qtp1613912455-16" PackageName="commonlibs.commonclasses" ClassName="CLanguage" MethodName="setLanguageFileName" Line="134" Code="-1002" Message="The language file in the path [C:\Users\Edgar\git\maps\brigadab-maps\src\main\webapp\WEB-INF\config\langs\tab_home_controller.init.lang.xml] not exists"/>

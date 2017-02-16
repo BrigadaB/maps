@@ -105,7 +105,7 @@
 						</systemProperty>
 					</systemPropieties>
 					<webAppConfig>
-						<contextPath>/brigadab01</contextPath>
+						<contextPath>/brigadab-maps</contextPath>
 					</webAppConfig>
 				</configuration>
 				<executions>

@@ -6,8 +6,7 @@
 		<vlayout width="800px">
 		<listbox id="listboxusers" width="100%" height="350px">
           <listhead sizable="true">
-            <!-- <listheader label="Id" width="100px"/>  -->
-            <listheader label="Users Name" width="100px"/>
+              <listheader label="Users Name" width="100px"/>
             <listheader label="First Name" width="100px"/>
             <listheader label="Last Name" width="100px"/>
             <listheader label="Role" width="100px"/>
