@@ -4,7 +4,7 @@
 
   <tab id="tabHome" label="Home" />
         
-  <tabpanel id="tabHomePanels" apply="">
+  <tabpanel id="tabHomePanels" apply="org.maps.controller.tab.home.CTabHomeController">
     
     <image src="/resources/images/logo.png"  sclass="centered"  /> 
     

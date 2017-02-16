@@ -40,7 +40,7 @@ import commonlibs.utils.Utilities;
 
 
 
-public class CTabMapController extends SelectorComposer<Component> {
+public class CTapMapController extends SelectorComposer<Component> {
 
 	private static final long serialVersionUID = -4054777931730185834L;
 

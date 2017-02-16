@@ -1,6 +1,5 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <?link rel="stylesheet" type="text/css" href="/resources/styles/home.style.css"?>
-<?init class="org.maps.security.CCheckAuthenticated" ?>
 <zk>
 
  <borderlayout id="homeLayout" apply="org.maps.controller.home.CHomeController"  hflex="1" vflex="1">
@@ -13,22 +12,17 @@
     
     <center id="mainContent" autoscroll="true" border="none"  >
             
-       <tabbox id="tabboxMainContent" width="100%" height="100%">
+      <tabbox id="tabboxMainContent" width="100%" height="100%">
       
           <tabs id="tabboxTaps">
-        
-        
         
           </tabs>
         
           <tabpanels id="tabboxPanels" >
         
-        
-        
           </tabpanels>
       
        </tabbox>      
-   
     </center>
     
     <south id="southContent" height="50px" border="none">

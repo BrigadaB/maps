@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<logs>
+<logMark Type="Init" Date="15/02/2017" Time="21:17:20"/>
+<Log InstanceID="unknown@unknown.com 2017-02-15-21-17-20" LogType="Error" Level="INFO" Date="15/02/2017" Time="21:17:20" LoggerName="tab_home_controller unknown@unknown.com 2017-02-15-21-17-20" Sequence="1" ThreadID="18" ThreadName="qtp1326413897-18" PackageName="commonlibs.commonclasses" ClassName="CLanguage" MethodName="setLanguageFileName" Line="134" Code="-1002" Message="The language file in the path [C:\Users\Al\workspace.tabMap\Brigadab01\src\main\webapp\WEB-INF\config\langs\tab_home_controller.init.lang.xml] not exists"/>
+<logMark Type="End" Date="15/02/2017" Time="21:21:17"/>
+</logs>

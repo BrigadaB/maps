@@ -1,13 +1,13 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?init class="org.maps.security.CCheckAuthenticated" ?>
 <zk> 
-   <tab id="tabGoogleMap" label="Google Map"  />
-    
-   <tabpanel id="tabGoogleMapPanels"  apply="org.maps.controller.tab.map.CTabMapController" >
-    
-      <toolbar>
+    <tab id="tabGoogleMap" label="Google Map" />
+   
+  	<tabpanel id="tabpanelMap" apply="org.maps.controller.tab.map.CTapMapController">
+		
+        <toolbar >
        	
-       		<grid width="100%"  height="+">
+       		<grid  >
         
                <rows>
   
@@ -36,7 +36,7 @@
   
                       <button id="buttonDeleteMarker" label="Delete Marker" hflex="1" disabled="true" />
   
-					  <button id="buttonClearMap" label="Clear Map" hflex="1" disabled="true" />
+					  <button id="buttonClearMap" label="Clear Map" hflex="1" />
 
 					  <button id="buttonChangeInfo" label="Change Info" hflex="1" />
                       <textbox id="textboxChangeInfo" hflex="1" />
@@ -47,11 +47,17 @@
   
            </grid> 
         
-     <gmaps version="3.0.4" id="gmaps" width="100%" height="100%" protocol="https" /></toolbar>
+        </toolbar>
      
-       <script type="text/javascript" content="zk.googleAPIkey='AIzaSyCHfkSwNhyxqSzFLxImtjksCovuUZJJYoM'"/>
-           
-    </tabpanel>
+        <script type="text/javascript" content="zk.googleAPIkey='AIzaSyCHfkSwNhyxqSzFLxImtjksCovuUZJJYoM';"/>
+	 
+	    <gmaps version="3.26" id="gmaps" width="100%" height="100%"  showSmallCtrl="true" protocol="https">
+
+			
+		</gmaps>
+		
+     
+     </tabpanel>
  </zk>
    
   

@@ -194,7 +194,7 @@ public class CHomeController extends SelectorComposer<Component> {
 	                }
 	            
 	            }
-	  
+	        }
 	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
@@ -222,7 +222,6 @@ public class CHomeController extends SelectorComposer<Component> {
 			}
         
     	}
-			}
     	catch ( Exception ex ) {
         
     		if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );

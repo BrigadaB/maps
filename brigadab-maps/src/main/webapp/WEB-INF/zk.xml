@@ -6,12 +6,11 @@
 	
 	<preference>
 		<name>org.zkoss.zk.ui.WebApp.name</name>
-		<value>brigadab-maps</value>
+		<value>zk-gmap-tab</value>
 	</preference>
 	-->
-   <listener>
-	<listener-class>org.maps.zksubsystem.CZKSubsystemEvents</listener-class>
-	</listener>
-	
-		
+	<listener>
+  		<listener-class>org.maps.zksubsystem.CZKSubsystemEvents</listener-class> 
+  	</listener>
+  	
 </zk>

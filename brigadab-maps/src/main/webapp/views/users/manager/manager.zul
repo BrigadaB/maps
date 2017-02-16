@@ -1,6 +1,5 @@
-<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
-<?link rel="stylesheet" type="text/css" href="resources/styles/login.style.css"?>
-<?init class="org.maps.security.CCheckAuthenticated"?>
+
+
 <zk>
 	<window id="windowsUsersManager" xmlns:w="client" title="Users manager" position="center,center" border="normal" apply="org.maps.controller.users.manager.CManagerController">
 		<vlayout width="800px">

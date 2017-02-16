@@ -146,7 +146,6 @@ public class UsersDAO {
 		return bResult;
 	}
 	
-	
 	public static boolean updateData (final CDatabaseConnection databaseConexion, final TBLUsers tblusers, CExtendedLogger localLogger, CLanguage localLanguage) {
 		
 		boolean bResult = false;
@@ -159,9 +158,9 @@ public class UsersDAO {
 				final String strDisabledAtTime = tblusers.getDisabledAtTime() != null ? "'"+LocalTime.now().toString() +"'":"null";
 				final String strSQL;
 				if (strDisabledAtDate==("null")){
-					strSQL = "Update tblusers set UserName = '"+tblusers.getUserName()+"', FirstName = '"+tblusers.getFirstName()+"', LastName = '"+tblusers.getLastName()+"', Role = '"+tblusers.getRole()+"', SingleSession = '"+tblusers.getSingleSession()+"', Description = '"+tblusers.getDescription()+"', UpdatedAtDate = '"+LocalDate.now().toString()+"', UpdatedAtTime ='"+LocalTime.now().toString()+"' where ID='"+ tblusers.getId()+"'";}				
+					strSQL = "Update tblusers set UserName = '"+tblusers.getUserName()+"', Password = '"+tblusers.getPassword()+"',  FirstName = '"+tblusers.getFirstName()+"', LastName = '"+tblusers.getLastName()+"', Role = '"+tblusers.getRole()+"', SingleSession = '"+tblusers.getSingleSession()+"', Description = '"+tblusers.getDescription()+"', UpdatedAtDate = '"+LocalDate.now().toString()+"', UpdatedAtTime ='"+LocalTime.now().toString()+"' where ID='"+ tblusers.getId()+"'";}				
 				else
-				{   strSQL = "Update tblusers set UserName = '"+tblusers.getUserName()+"', FirstName = '"+tblusers.getFirstName()+"', LastName = '"+tblusers.getLastName()+"', Role = '"+tblusers.getRole()+"', SingleSession = '"+tblusers.getSingleSession()+"', Description = '"+tblusers.getDescription()+"', UpdatedAtDate = '"+LocalDate.now().toString()+"', UpdatedAtTime ='"+LocalTime.now().toString()+"',  DisabledAtDate ='"+strDisabledAtDate+"', DisabledAtTime ='"+strDisabledAtTime+"' where ID='"+ tblusers.getId()+"'";}	
+				{   strSQL = "Update tblusers set UserName = '"+tblusers.getUserName()+"', Password = '"+tblusers.getPassword()+"',  FirstName = '"+tblusers.getFirstName()+"', LastName = '"+tblusers.getLastName()+"', Role = '"+tblusers.getRole()+"', SingleSession = '"+tblusers.getSingleSession()+"', Description = '"+tblusers.getDescription()+"', UpdatedAtDate = '"+LocalDate.now().toString()+"', UpdatedAtTime ='"+LocalTime.now().toString()+"',  DisabledAtDate ='"+strDisabledAtDate+"', DisabledAtTime ='"+strDisabledAtTime+"' where ID='"+ tblusers.getId()+"'";}	
 				statement.executeUpdate(strSQL);
 				databaseConexion.getDBConnection().commit(); // importante hacer commit sino no guarda la información en la base de datos
 				statement.close(); //liberar recursos
@@ -417,8 +416,7 @@ public static TBLUsers changePassword(final CDatabaseConnection databaseConexion
 						
 						tblusers.setPassword(strNewPassword);
 
-						updatePassword(databaseConexion, resultSet.getString("Id"), strNewPassword, localLogger, localLanguage);
-					
+						updateData(databaseConexion, tblusers, localLogger, localLanguage);
 						Messagebox.show("Password Cambiado exitosamente");
                     }else
 				{
@@ -451,80 +449,5 @@ public static TBLUsers changePassword(final CDatabaseConnection databaseConexion
 		
 	}
 			
-
-public static boolean updatePassword(final CDatabaseConnection databaseConexion, final String IdUsers,final String strPassword, CExtendedLogger localLogger, CLanguage localLanguage) {
-	
-	boolean bResult = false;
-	try{
-		if (databaseConexion != null && databaseConexion.getDBConnection() != null)
-		{
-			Statement statement = databaseConexion.getDBConnection().createStatement();
-			
-			final String strSQL;
-      	    strSQL = "Update tblusers set Password = '"+strPassword+"' where ID='"+ IdUsers+"'";
-		    statement.executeUpdate(strSQL);
-			databaseConexion.getDBConnection().commit(); // importante hacer commit sino no guarda la información en la base de datos
-			statement.close(); //liberar recursos
-			bResult = true;
-			
-	}
-		}
-	
-	catch (Exception ex) {
-		if (databaseConexion != null && databaseConexion.getDBConnection() != null)
-		{
-			try {
-				// i hay error hacer rollback a las operaciones anteriores
-				databaseConexion.getDBConnection().rollback(); 
-			} catch (Exception e) {
-				
-				if ( localLogger != null )   
-					localLogger.logException( "-1021", e.getMessage(), e);        
-			}
-		}			
-		if ( localLogger != null )   
-			localLogger.logException( "-1022", ex.getMessage(), ex );        
-	} 
-	return bResult;
-
-}	
-
-public static boolean validUserName (final CDatabaseConnection databaseConexion, final String strId, final String strUserName, CExtendedLogger localLogger, CLanguage localLanguage) {
-	
-	boolean result = false;
-try {
-		
-		if (databaseConexion != null && databaseConexion.getDBConnection() != null) {
-			Statement statement = databaseConexion.getDBConnection().createStatement();
-			ResultSet resultSet = statement.executeQuery("Select username From tblusers Where username='" + strUserName + "' and id<>'"+strId +"'");
-			result=resultSet.next();
-			// una vez termina hay que liberar recursos
-			statement.close();
-			resultSet.close();
-		
-			}	
-		}
-	catch (Exception ex) {
-		if (databaseConexion != null && databaseConexion.getDBConnection() != null)
-		{
-			try {
-				// i hay error hacer rollback a las operaciones anteriores
-				databaseConexion.getDBConnection().rollback(); 
-			} catch (Exception e) {
-				
-				if ( localLogger != null )   
-					localLogger.logException( "-1021", e.getMessage(), e );        
-			}
-		}						
-		if ( localLogger != null )   
-			localLogger.logException( "-1022", ex.getMessage(), ex );        
-	}
-		
-	
-	
-	return result;
-}
-
-
 
 }

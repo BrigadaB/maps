@@ -228,6 +228,81 @@ public class CManagerController extends SelectorComposer<Component> {
 			}
 		}
 
+	// ------------------------ CREATE ---------------------
+    	
+  /*  @Listen("onAgregar=#buttonAdd")
+    public void onAgregar(Event evento){
+        TBLPerson perso = ( TBLPerson ) evento.getData();
+        dataModel.add(perso);
+        listboxperson.setModel( dataModel );
+        listboxperson.setItemRenderer( new RendererPerson() );
+        //TBLPersonDAO.insertData(DatabaseConnection, perso);  // *********************************lo pongo en comentarios porque ya agrega en CDialogController
+        
+    }
+
+    @Listen ("onClick=#buttonConnectionToDB")
+    public void onClickbuttonConnectionToDB (Event event){
+
+    	Session currentSession = Sessions.getCurrent();
+
+    	if (databaseConnection== null)   //( buttonConnectionToDB.getLabel().equalsIgnoreCase( "Connect" ))
+    	{
+    		databaseConnection = new CDatabaseConexion();
+
+    		CDatabaseConnectionConfig databaseConnectionConfig = new CDatabaseConnectionConfig();
+
+    		//lugar donde esta el archivo de configuracion
+    		String strRunningPath = Sessions.getCurrent().getWebApp().getRealPath(SystemConstants._WEB_INF_Dir) + File.separator + SystemConstants._CONFIG_Dir + File.separator;
+
+    		if (databaseConnectionConfig.loadConfig(strRunningPath + SystemConstants._Database_Connection_Config_File_Name, controllerLogger, controllerLanguage)) {
+
+    			if (databaseConnection.makeConnectionToDB(databaseConnectionConfig, controllerLogger, controllerLanguage))
+    			{
+    				//Salvamos la configuracion en el objeto databaseConnection
+    				//databaseConnection.setDBConnectionConfig(databaseConnectionConfig, webAppLogger, null);
+    				
+    				//salvamos la conexion a la sesion actual del usuario, cada usuario/pestaña tiene su propia sesion
+    				currentSession.setAttribute(SystemConstants._DB_Connection_Session_Key, databaseConnection);
+    				//buttonConnectionToDB.setLabel("Disconnect");
+    				Messagebox.show("Conexión Exitosa");
+    			}
+    			else {
+    				Messagebox.show("Conexión Fallida");
+    			}
+    		}
+    		else {
+    			Messagebox.show("Error al leer el archivo de configuración");
+    		}
+
+    	} else {
+    		if (databaseConnection != null){
+    			//Obtenemos el logger del objeto webApp 
+        		CExtendedLogger webAppLogger = (CExtendedLogger) Sessions.getCurrent().getWebApp().getAttribute(ConstantsCommonClasses._Webapp_Logger_App_Attribute_Key);
+
+        		if (databaseConnection.closeConnectionToDB(webAppLogger, null)){
+
+    				databaseConnection = null;
+    				Messagebox.show("Conexión Cerrada");
+    				//buttonConnectionToDB.setLabel("Connect");		
+
+    				//borramos la variable de sesion
+    				//currentSession.setAttribute(_DATABASE_CONNECTION_KEY, null);
+    				currentSession.removeAttribute(SystemConstants._DB_Connection_Session_Key);
+
+    			}else{
+    				Messagebox.show("falla al cerrar conexión");
+    			}
+
+    		}else {
+    			Messagebox.show("No estas conectado");
+
+    		}
+
+    	}
+        Events.echoEvent( new Event( "onClick", buttonRefresh) ); //forzamos el refresh para visualizar los elementos de la lista    	
+   }
+*/
+    
     @Listen ("onClick=#buttonRefresh")
     public void onClickbuttonRefresh (Event event){
     
@@ -284,10 +359,12 @@ public class CManagerController extends SelectorComposer<Component> {
 			  
               Window win = (Window) Executions.createComponents("/views/users/editor/editor.zul",null, parametro); //attach to page as root if parent is null
 		      win.doModal();
-		       }
+		      
+		  }
 			  else {
 				  Messagebox.show("No hay seleción");
 		  }
+
 	}
 	
     //evento que edita el model en la persona y permite volver a renderizar el model 
@@ -305,7 +382,33 @@ public class CManagerController extends SelectorComposer<Component> {
     
     	windowsUsersManager.detach();
     }
+    
+    
+/*    @Listen( "onCambiar=#buttonModify" )
+    public void onCambiar( Event evento) {
         
+        TBLPerson persona = ( TBLPerson ) evento.getData();
+        int i=0;
+        //Messagebox.show( dataModel.getSize()+1+"numero" );
+        while(i<=dataModel.getSize()){
+            if(dataModel.getElementAt(i).getId() == persona.getId()){
+                dataModel.getElementAt(i ).setId( persona.getId() );
+                dataModel.getElementAt( i ).setFirstName( persona.getFirstName());
+                dataModel.getElementAt(i).setLastName( persona.getLastName());
+                dataModel.getElementAt( i ).setGender( persona.getGender() );
+                dataModel.getElementAt( i ).setBirthDate( persona.getBirthDate());
+                dataModel.getElementAt( i ).setComment( persona.getComment() );
+            i=dataModel.getSize();
+            }
+            i=i+1;
+
+        }
+        listboxperson.setModel( dataModel );
+        listboxperson.setItemRenderer( new RendererPerson() );
+        
+    }
+*/
+	
 	// ------------------------ DELETE ---------------------
 	
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -316,10 +419,10 @@ public class CManagerController extends SelectorComposer<Component> {
     		String strBuffers =null;
     		for  (TBLUsers users : SelectedItems) {
     			if (strBuffers == null){
-    				strBuffers =  users.getFirstName() + " " + users.getLastName() ;
+    				strBuffers = users.getId() + " " + users.getFirstName() + " " + users.getLastName() ;
     			}
     			else
-    			{ strBuffers = strBuffers + "\n" + users.getFirstName() + " " + users.getLastName() ;}
+    			{ strBuffers = strBuffers + "\n" + users.getId() + " " + users.getFirstName() + " " + users.getLastName() ;}
     		}
      		Messagebox.show("¿Seguro que quiere borrar " + Integer.toString(SelectedItems.size() ) + " registros?\n"+ strBuffers, "Eliminar", 
   			Messagebox.OK |Messagebox.CANCEL, Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener() 
@@ -330,6 +433,7 @@ public class CManagerController extends SelectorComposer<Component> {
     			while (SelectedItems.iterator().hasNext()) 
     			 {
     				TBLUsers person = SelectedItems.iterator().next();
+    				//SelectedItems.iterator().remove();
     				dataModel.remove(person);
     				UsersDAO.deleteData( databaseConnection, person.getId(), controllerLogger, controllerLanguage);
     			        

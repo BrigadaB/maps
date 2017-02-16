@@ -1,4 +1,5 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?init class="org.maps.security.CCheckAuthenticated" ?>
 <zk>
  
  <div hflex="1" vflex="1"  sclass="banner">
