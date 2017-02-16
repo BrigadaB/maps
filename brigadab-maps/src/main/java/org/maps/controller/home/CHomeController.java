@@ -170,7 +170,7 @@ public class CHomeController extends SelectorComposer<Component> {
 				  }
 				
 			}
-			//if ( tblUsers.getRole() == 0 ) {
+			if ( tblUsers.getRole() == 0 ) {
 	            
 	            // creaos el componente a partir del Zul un arreglo con los dos componentes raiz
 	            components =  Executions.getCurrent().createComponents( "/views/tabs/admin/tabadmin.zul", null );
@@ -194,7 +194,7 @@ public class CHomeController extends SelectorComposer<Component> {
 	                }
 	            
 	            }
-	       // }
+	  
 	            
 			// creaos el componente a partir del Zul un arreglo con los dos
 			// componentes raiz
@@ -222,6 +222,7 @@ public class CHomeController extends SelectorComposer<Component> {
 			}
         
     	}
+			}
     	catch ( Exception ex ) {
         
     		if ( controllerLogger != null ) controllerLogger.logException( "-1021" , ex.getMessage(), ex );
