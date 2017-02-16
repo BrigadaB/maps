@@ -20,12 +20,11 @@
 
       </div>
       
-      <vbox hflex="1" vflex="1" pack="end" align="end" if="${sessionScope.operatorCredential != null}"> 
+      <vbox hflex="1" vflex="1" pack="end" align="end" > <!-- if="${sessionScope.operatorCredential != null}" > --> 
 
         <hbox hflex="1" vflex="1" pack="end" align="end">
         
-          <label id="lbProfile" value="${sessionScope.operatorCredential} (${sessionScope.operatorCredential})" style="cursor:hand;cursor:pointer"/>  
-
+          <label id="lbProfile"  style="cursor:hand;cursor:pointer"/>   <!-- value="${sessionScope.operatorCredential} (${sessionScope.operatorCredential})"  -->
           <space bar="false" spacing="20px"/>
  
           <button id="buttonChangePassword" label="Change password"/>

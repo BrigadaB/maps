@@ -16,6 +16,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Selectbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -57,7 +58,7 @@ public class CEditorController extends SelectorComposer<Component> {
 
     protected CLanguage controllerLanguage = null;
     
-    @Wire Window windowsUsers;
+    @Wire Window windowsUsersEditor;
 	@Wire Label labeld;
 	@Wire Textbox textboxId;
 	@Wire Label labelUserName;
@@ -199,6 +200,8 @@ public class CEditorController extends SelectorComposer<Component> {
 				textboxUserName.setValue( usersM.getUserName() );
 				textboxFirstName.setValue( usersM.getFirstName() );
 				textboxLastName.setValue( usersM.getLastName() );
+				//buttonResetPassword.setVisible(true);
+			
 				if ( usersM.getRole() == 0 ) {
 					dataModelRole.addToSelection( "Admin" );
 				}
@@ -213,40 +216,34 @@ public class CEditorController extends SelectorComposer<Component> {
 			if ( controllerLogger != null )   
 				controllerLogger.logException( "-1021", ex.getMessage(), ex );        
 		}
+	
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Listen ( "onClick=#buttonAccept")
 	public void onClickbuttonaccept (Event event) {
-		/* Messagebox.show("Id: " + textboxid.getValue() + " Nombre: "+ textboxFirstName.getValue()+
-		 "Apellido: "+ textboxlastName.getValue() + " Fecha Nacimiento: " + dateboxbirthdate.getValue()
-		, "Aceptar", Messagebox.OK, Messagebox.INFORMATION);
-*/
-		//System.out.println("hola aceptar");
-
-/**		if (textboxId.getValue() == "") {
-			Messagebox.show("debe tener un ID", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-		} else 
-			if (textboxFirstName.getValue() == "") {
-				Messagebox.show("debe tener un Nombre", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-			} else 
-				if (textboxLastName.getValue() == "") {
-					Messagebox.show("debe tener un Apellido", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-				} else 
-                  if (dateboxBirthDate.getValue()==null){
-		             Messagebox.show("debe indicar una fecha válida", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
-		        }
-		else
-		{
-	     
-**/		
-//		person = new TBLPerson(textboxId.getValue(),textboxFirstName.getValue(),textboxLastName.getValue(),selectboxGender.getSelectedIndex(),fechanac,textboxComment.getValue());
 		
-		//windowsPerson.detach();
-		//LocalDate fechanac = new java.sql.Date(dateboxBirthDate.getValue().getTime()).toLocalDate();
- 
+		
+		if (textboxUserName.getValue().isEmpty()) 
+			Messagebox.show("Must indicate user name ", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
+		 else
+			 if (UsersDAO.validUserName(DatabaseConnection, textboxId.getValue(), textboxUserName.getValue(), controllerLogger, controllerLanguage))
+					Messagebox.show("This user name is already in use", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
+			 else				 
+      		if (textboxFirstName.getValue().isEmpty()) 
+				Messagebox.show("Must indicate first name ", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
+			 else 
+				if (textboxLastName.getValue().isEmpty()) 
+					Messagebox.show("Must indicate last name ", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
+				 else 
+					 if (textboxPassword.getValue().isEmpty() && (usersM == null) )
+			          	  Messagebox.show("Must indicate password", "Error", Messagebox.OK, Messagebox.EXCLAMATION);
+				else
+				{					 
+		{
+		
 	if (usersM != null) {
 	
-//* 		 person = new TBLPerson();
 	     usersM.setId(textboxId.getValue());
 	     usersM.setUserName(textboxUserName.getValue());
 	     usersM.setFirstName(textboxFirstName.getValue());
@@ -254,20 +251,41 @@ public class CEditorController extends SelectorComposer<Component> {
          usersM.setRole((byte) selectboxRole.getSelectedIndex());
 	     usersM.setDescription(textboxDescription.getValue());
 
-	        String strPassword = textboxPassword.getValue();
-			String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar
-			strPassword= BCrypt.hashpw(strPassword, strPasswordKey); //aqui se realiza la encriptación
-			strPassword = strPassword.replace("$2a$10$", "$2y$10$"); //
-		
-		usersM.setPassword(strPassword);
+	     if (!textboxPassword.getValue().isEmpty()) {
+			
+	    	 Messagebox.show("¿Do you wish to change password ?", "Reset password", 
+	    			 Messagebox.OK |Messagebox.CANCEL, Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener() 
+	    	 {public void onEvent(Event evt) throws InterruptedException {
+
+	    		 if (evt.getName().equals("onOK")) 
+	    		 {
+	    			 if (controllerLogger != null) 
+	    				 controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Logout confirmed" ) );
+
+	    			 //ok aqui vamos a hacer el logout
+	 	    	    String strPassword = textboxPassword.getValue();
+					String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar
+					strPassword= BCrypt.hashpw(strPassword, strPasswordKey); //aqui se realiza la encriptación
+					strPassword = strPassword.replace("$2a$10$", "$2y$10$"); //
+	    			 UsersDAO.updatePassword(DatabaseConnection, textboxId.getValue(), strPassword, controllerLogger, controllerLanguage);
+
+	    		 }
+	    		 else {
+	    			 if (controllerLogger != null) 
+	    				 controllerLogger.logMessage( "1" , CLanguage.translateIf( controllerLanguage, "Logout canceled" ) );
+	    		 }		   
+
+	    	 }});
+
+	     }	        
 	     
-	     // ******************* el en video usan dos variables persontoadd y persontomodify, yo uso una sola, este codigo es menos entendible
-	     
-     	UsersDAO.updateData(DatabaseConnection, usersM, controllerLogger, controllerLanguage); 
-        Events.echoEvent( new Event( "onCambiar", callerComponent, usersM ) );    
+ 	     
+     	UsersDAO.updateData(DatabaseConnection, usersM, controllerLogger, controllerLanguage);
+     	Events.echoEvent( new Event( "onCambiar", callerComponent, usersM ) );    
 
         }
         else{
+            
         	 usersA = new TBLUsers();
     	     usersA.setId(textboxId.getValue());
     	     usersA.setUserName(textboxUserName.getValue());
@@ -275,29 +293,27 @@ public class CEditorController extends SelectorComposer<Component> {
     	     usersA.setLastName(textboxLastName.getValue());
              usersA.setRole((byte) selectboxRole.getSelectedIndex());
     	     usersA.setDescription(textboxDescription.getValue());
-
+    	     
  	        String strPassword = textboxPassword.getValue();
  			String strPasswordKey = BCrypt.gensalt(10); //establecemos el parametro de inicio para encriptar
  			strPassword= BCrypt.hashpw(strPassword, strPasswordKey); //aqui se realiza la encriptación
  			strPassword = strPassword.replace("$2a$10$", "$2y$10$"); //
  		
- 		usersA.setPassword(strPassword);
-    	     UsersDAO.insertData(DatabaseConnection, usersA, controllerLogger, controllerLanguage);                    //actualizamos en la db 
+ 		    usersA.setPassword(strPassword);
+    	    UsersDAO.insertData(DatabaseConnection, usersA, controllerLogger, controllerLanguage);                    //actualizamos en la db 
             Events.echoEvent( new Event( "onCambiar", callerComponent, usersA ) );
-        }
+    }
+	     }	       
+				
+		windowsUsersEditor.detach();	}
+}
 
-		windowsUsers.detach();
-		}
-//Events.echoEvent("onClickbuttonModify",null, _subsInfo);
 		
-
-	
-	
 	
 @Listen ( "onClick=#buttonCancel")
 public void onClickbuttoncancel (Event event) {
 	 //Messagebox.show("Cancelar", "Cancel", Messagebox.OK, Messagebox.EXCLAMATION);
 		//System.out.println("hola cancelar");
-		windowsUsers.detach();
+		windowsUsersEditor.detach();
 	}
 }

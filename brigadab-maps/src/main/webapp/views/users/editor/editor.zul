@@ -1,7 +1,9 @@
 <?page title="User" contentType="text/html;charset=UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="resources/styles/login.style.css"?>
+<?init class="org.maps.security.CCheckAuthenticated"?>
 
 <zk>
- <window id="windowsUsers" xmlns:w="client" title="Users" border="normal" hflex="min" apply="org.maps.controller.users.editor.CEditorController">
+ <window id="windowsUsersEditor" xmlns:w="client" title="Users" border="normal" hflex="min" apply="org.maps.controller.users.editor.CEditorController">
    <vlayout width="290px">
      <grid hflex="min">
 		<rows>
@@ -12,11 +14,8 @@
 	     </row>
 		 <row>
 		  <label id="labelUserName" value="User Name:" width="150px" />
-		  <textbox id="textboxUserName" value=""	width="180px" tabindex="2">
-		     	<attribute w:name="doKeyPress_">
-		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
-            </attribute>
-		   </textbox>
+		  <textbox id="textboxUserName"  value=""	width="180px" tabindex="2">
+          </textbox>
 		</row>
 		 <row>
 		  <label id="labelFirstName" value="First Name:" width="150px" />
@@ -34,12 +33,10 @@
             </attribute>
 		</row>
 		<row>
-		  <label id="labelPassword" value="Password:" width="150px" />
+		  <label id="labelPassword" value="Password:" width="150px"  />
 		  <textbox id="textboxPassword" value="" type="password" width="180px" tabindex="4" />
-		  <attribute w:name="doKeyPress_">
-		   		<![CDATA[function(evt){ if (!this._shallIgnore(evt,"abcdefghijklmnopqrstuvwxyzñÑABCDEFGHIJKLMNOPQRSTUVWXYZáéíóú ")) this.$doKeyPress_(evt); }]]> 
-            </attribute>
-		</row>
+    	</row>
+		
 		 <row>
 		  <label id="labelRole" value="Role:" width="150px" />
 		    <selectbox id="selectboxRole" width="180px" tabindex="5"/>

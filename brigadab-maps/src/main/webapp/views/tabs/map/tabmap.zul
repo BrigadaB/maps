@@ -13,7 +13,7 @@
   
                   <row align="right">
   
-  		  			  <button id="buttonSaveMap" label="Save Map" hflex="1" />
+  		  			  <button id="buttonSaveMap" label="Save Map" hflex="1" disabled="true" />
   		  			    
                       <label value="Latitude:" />
                       <doublebox id="doubleboxLatitude" hflex="1" />
